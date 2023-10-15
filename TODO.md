@@ -1,0 +1,16 @@
+# Things to do
+- [x] Etho Slab
+- [ ] Torches that burn out
+- [ ] Pink wither
+- [x] Horses and Ponies
+- [ ] Redstone Bugs
+- [x] Diamond Chickens
+- [ ] Floppers
+- [x] Furnace Heat
+- [x] Neutral Chickens
+- [ ] Mob Fatness (fat entity rendering missing)
+- [ ] Flying Sheeps
+- [ ] Pigmen battle signs
+- [x] Super Hostile Mode
+- [x] Speech Bubbles
+- [ ] Tinted Glass?

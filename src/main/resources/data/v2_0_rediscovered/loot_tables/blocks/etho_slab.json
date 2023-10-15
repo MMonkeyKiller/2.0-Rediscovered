@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "v2_0_rediscovered:etho_slab",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "unstable": false
+              }
+            }
+          ],
+          "name": "v2_0_rediscovered:etho_slab"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": {
+      "item": "minecraft:tnt"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "item": "v2_0_rediscovered:etho_slab",
+    "count": 6
+  },
+  "show_notification": true
+}

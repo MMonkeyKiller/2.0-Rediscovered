@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "v2_0_rediscovered",
+  "version": "${version}",
+
+  "name": "2.0 Rediscovered",
+  "description": "This mod implements the features of Minecraft 2.0, an April Fools joke released by Mojang on 2013",
+  "authors": [
+    "MonkeyKiller"
+  ],
+  "contact": {
+    "homepage": "https://github.com/MMonkeyKiller",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/v2_0_rediscovered/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered"
+    ],
+    "client": [
+      "me.monkeykiller.v2_0_rediscovered.client.V2_0_RediscoveredClient"
+    ]
+  },
+  "mixins": [
+    "v2_0_rediscovered.mixins.super_hostile_mode.json",
+    "v2_0_rediscovered.mixins.horse_entities.json",
+    "v2_0_rediscovered.mixins.horse_entities_client.json",
+    "v2_0_rediscovered.mixins.furnace_heat.json",
+    "v2_0_rediscovered.mixins.speech_bubbles.json",
+    "v2_0_rediscovered.mixins.chickens.json",
+    "v2_0_rediscovered.mixins.chickens_client.json",
+    "v2_0_rediscovered.mixins.etho_slab.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.17",
+    "fabric-api": "*",
+    "minecraft": "~1.19.4",
+    "java": ">=17"
+  }
+}
