@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "v2_0_rediscovered:block/torch_off"
+  }
+}

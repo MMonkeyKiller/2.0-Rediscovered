@@ -6,6 +6,8 @@ import me.monkeykiller.v2_0_rediscovered.common.configuration.ConfigUtils;
 import me.monkeykiller.v2_0_rediscovered.common.etho_slab.EthoSlabBlock;
 import me.monkeykiller.v2_0_rediscovered.common.speech_bubbles.SpeechBubbleEntity;
 import me.monkeykiller.v2_0_rediscovered.common.superhostilemode.SuperHostileModeInstance;
+import me.monkeykiller.v2_0_rediscovered.common.torch_off.TorchOffBlock;
+import me.monkeykiller.v2_0_rediscovered.common.torch_off.WallTorchOffBlock;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -20,10 +22,12 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
+import net.minecraft.item.VerticallyAttachableBlockItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +45,10 @@ public class V2_0_Rediscovered implements ModInitializer {
     public static final Block ETHO_SLAB_BLOCK = register("etho_slab", new EthoSlabBlock(Settings.copy(Blocks.TNT).strength(2.0F, 10.0F).sounds(BlockSoundGroup.GRASS)));
     public static final Item ETHO_SLAB_ITEM = register("etho_slab", new BlockItem(ETHO_SLAB_BLOCK, new FabricItemSettings()));
 
+    public static final Block TORCH_OFF_BLOCK = register("torch_off", new TorchOffBlock(Settings.copy(Blocks.TORCH).luminance(state -> 0)));
+    public static final Block WALL_TORCH_OFF_BLOCK = register("wall_torch_off", new WallTorchOffBlock(Settings.copy(Blocks.WALL_TORCH).dropsLike(TORCH_OFF_BLOCK).luminance(state -> 0)));
+    public static final Item TORCH_OFF_ITEM = register("torch_off", new VerticallyAttachableBlockItem(TORCH_OFF_BLOCK, WALL_TORCH_OFF_BLOCK, new FabricItemSettings(), Direction.DOWN));
+
     public static Identifier identifier(@NotNull String path) {
         return new Identifier(MOD_ID, path);
     }
@@ -52,6 +60,7 @@ public class V2_0_Rediscovered implements ModInitializer {
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(content -> {
             content.add(ETHO_SLAB_ITEM);
+            content.add(TORCH_OFF_ITEM);
         });
 
         if (ConfigUtils.isSuperHostileModeEnabled()) {

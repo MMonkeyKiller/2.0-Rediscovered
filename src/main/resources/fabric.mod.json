@@ -33,7 +33,8 @@
     "v2_0_rediscovered.mixins.speech_bubbles.json",
     "v2_0_rediscovered.mixins.chickens.json",
     "v2_0_rediscovered.mixins.chickens_client.json",
-    "v2_0_rediscovered.mixins.etho_slab.json"
+    "v2_0_rediscovered.mixins.etho_slab.json",
+    "v2_0_rediscovered.mixins.torch_off.json"
   ],
 
   "depends": {

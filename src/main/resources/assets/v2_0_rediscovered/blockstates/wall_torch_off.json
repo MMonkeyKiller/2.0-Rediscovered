@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "v2_0_rediscovered:block/wall_torch_off"
+    },
+    "facing=north": {
+      "model": "v2_0_rediscovered:block/wall_torch_off",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "v2_0_rediscovered:block/wall_torch_off",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "v2_0_rediscovered:block/wall_torch_off",
+      "y": 180
+    }
+  }
+}

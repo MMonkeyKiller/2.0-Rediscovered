@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "verbose": true,
+  "package": "me.monkeykiller.v2_0_rediscovered.common.torch_off.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "AbstractBlockMixin",
+    "FlintAndSteelItemMixin",
+    "TorchBlockMixin"
+  ],
+  "client": [
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
