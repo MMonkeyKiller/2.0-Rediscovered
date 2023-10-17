@@ -25,6 +25,7 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -33,9 +34,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ChickenEntity.class)
 public abstract class ChickenEntityMixin extends MobEntity implements DiamondChickenAccessor {
-
+    @Unique
     private static final TrackedData<Boolean> DIAMOND_CHICKEN = DataTracker.registerData(ChickenEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
+    @Unique
     int anger = 0;
 
     protected ChickenEntityMixin(EntityType<? extends MobEntity> entityType, World world) {
@@ -95,7 +97,7 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
     public ItemEntity customLayEgg(ChickenEntity instance, ItemConvertible itemConvertible) {
         if (!isDiamondChicken()) return null;
         if (random.nextFloat() < 0.05D) {
-            this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), 2.0F, false, World.ExplosionSourceType.MOB);
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 2.0F, false, World.ExplosionSourceType.MOB);
         } else if (random.nextBoolean()) return this.dropItem(Items.DIAMOND);
         else return this.dropItem(Items.LAPIS_LAZULI);
         return null;
@@ -105,26 +107,26 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
     public boolean damage(DamageSource source, float amount) {
         if (!super.damage(source, amount)) return false;
         if (this.random.nextFloat() < 0.25f && source.getAttacker() instanceof ServerPlayerEntity player) {
-            var chickens = this.world.getEntitiesByClass(ChickenEntity.class, getBoundingBox().expand(10D, 10D, 10D), e -> e != (MobEntity) this);
+            var chickens = this.getWorld().getEntitiesByClass(ChickenEntity.class, getBoundingBox().expand(10D, 10D, 10D), e -> e != (MobEntity) this);
             var size = chickens.size();
             for (int i = MathHelper.nextInt(this.random, 1, 3); size < i; ++size) {
-                var chicken = new ChickenEntity(EntityType.CHICKEN, this.world);
+                var chicken = new ChickenEntity(EntityType.CHICKEN, getWorld());
                 chicken.setPosition(this.getX(), this.getY() + 1.5D, this.getZ());
                 chicken.setYaw(this.getYaw());
                 chicken.setPitch(this.getPitch());
                 chicken.setTarget(player);
-                this.world.spawnEntity(chicken);
+                this.getWorld().spawnEntity(chicken);
             }
         }
         return true;
     }
 
     protected PlayerEntity getNearestPlayerToAttack() {
-        var player = this.world.getClosestPlayer(this, 64.0D);
+        var player = this.getWorld().getClosestPlayer(this, 64.0D);
         if (player == null) return null;
         if (this.isPlayerStaring(player)) {
             if (this.anger == 0) {
-                this.world.playSound(null, getBlockPos(), SoundEvents.ENTITY_CHICKEN_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                this.getWorld().playSound(null, getBlockPos(), SoundEvents.ENTITY_CHICKEN_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
             }
 
             if (this.anger++ == 5) {

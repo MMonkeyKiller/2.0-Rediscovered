@@ -11,7 +11,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
@@ -95,26 +95,27 @@ public abstract class MobEntityMixin implements HorseEntityAccessor, FatEntityAc
 
         if (item == null || !((AnimalEntity) self).isBreedingItem(item)) return;
 
-        if (self.world instanceof ServerWorld serverWorld && !self.isBaby() && !(self instanceof WolfEntity) && !(self instanceof CatEntity) && !(self instanceof OcelotEntity)) {
+        if (self.getWorld() instanceof ServerWorld serverWorld && !self.isBaby() && !(self instanceof WolfEntity) && !(self instanceof CatEntity) && !(self instanceof OcelotEntity)) {
             if (!player.getAbilities().creativeMode) item.decrement(1);
             newFatness = this.getFatness() + 1;
 
             if (newFatness > 9) {
                 self.discard();
-                self.world.createExplosion(self, self.getX(), (self.getBoundingBox().minY + self.getBoundingBox().maxY) / 2D, self.getZ(), 0.0F, World.ExplosionSourceType.NONE);
+                self.getWorld().createExplosion(self, self.getX(), (self.getBoundingBox().minY + self.getBoundingBox().maxY) / 2D, self.getZ(), 0.0F, World.ExplosionSourceType.NONE);
                 int var4 = self.getRandom().nextInt(newFatness * 2);
 
                 for (int i = 0; i < var4; ++i) {
-                    var lootTable = serverWorld.getServer().getLootManager().getTable(self.getLootTable());
-                    var builder = new LootContext.Builder(serverWorld).random(self.getRandom())
-                            .parameter(LootContextParameters.THIS_ENTITY, self)
-                            .parameter(LootContextParameters.ORIGIN, self.getPos())
-                            .parameter(LootContextParameters.DAMAGE_SOURCE, self.getDamageSources().fall());
+                    var lootTable = serverWorld.getServer().getLootManager().getLootTable(self.getLootTable());
+                    var builder = new LootContextParameterSet.Builder(serverWorld)
+                            // .random(self.getRandom().nextLong())
+                            .add(LootContextParameters.THIS_ENTITY, self)
+                            .add(LootContextParameters.ORIGIN, self.getPos())
+                            .add(LootContextParameters.DAMAGE_SOURCE, self.getDamageSources().fall());
                     var list = lootTable.generateLoot(builder.build(LootContextTypes.ENTITY));
                     if (list.isEmpty()) continue;
                     var stack = list.get(self.getRandom().nextInt(list.size()));
 
-                    var itemEntity = new ItemEntity(self.world, self.getX(), self.getY() + 0.3D,
+                    var itemEntity = new ItemEntity(self.getWorld(), self.getX(), self.getY() + 0.3D,
                             self.getZ(), stack);
 
                     itemEntity.setPickupDelay(40);
@@ -124,12 +125,12 @@ public abstract class MobEntityMixin implements HorseEntityAccessor, FatEntityAc
                             (self.getRandom().nextFloat() * 0.3F) + 0.2F,
                             self.getRandom().nextGaussian() * (double) var7
                     );
-                    self.world.spawnEntity(itemEntity);
+                    self.getWorld().spawnEntity(itemEntity);
                 }
             }
 
             this.setFatness(newFatness);
         }
-        if (self.world.isClient) cir.setReturnValue(ActionResult.CONSUME);
+        if (self.getWorld().isClient()) cir.setReturnValue(ActionResult.CONSUME);
     }
 }

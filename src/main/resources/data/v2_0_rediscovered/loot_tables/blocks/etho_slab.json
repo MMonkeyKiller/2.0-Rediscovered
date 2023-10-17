@@ -16,7 +16,7 @@
               "block": "v2_0_rediscovered:etho_slab",
               "condition": "minecraft:block_state_property",
               "properties": {
-                "unstable": false
+                "unstable": "false"
               }
             }
           ],
@@ -25,5 +25,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "v2_0_rediscovered:etho_slab"
 }

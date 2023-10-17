@@ -49,18 +49,18 @@ public abstract class TntEntityMixin implements EthoEntityAccessor {
     @Inject(at = @At("TAIL"), method = "explode")
     public void ethoExplode(CallbackInfo ci) {
         var self = (TntEntity) (Object) this;
-        var random = self.world.random;
+        var random = self.getWorld().random;
 
         if (random.nextFloat() < 0.25F && this.isEtho()) {
-            var closestPlayer = self.world.getClosestPlayer(
+            var closestPlayer = self.getWorld().getClosestPlayer(
                     self.getX(), self.getY(), self.getZ(),
                     20.0D, false);
             if (closestPlayer != null) {
-                var fallingBlock = FallingBlockEntityInvoker.newFallingBlockEntity(self.world,
+                var fallingBlock = FallingBlockEntityInvoker.newFallingBlockEntity(self.getWorld(),
                         closestPlayer.getX(), closestPlayer.getBoundingBox().maxY + 1.0D, closestPlayer.getZ(),
                         Blocks.ANVIL.getDefaultState());
                 fallingBlock.setHurtEntities(40.0F, 40);
-                self.world.spawnEntity(fallingBlock);
+                self.getWorld().spawnEntity(fallingBlock);
             }
         }
     }
