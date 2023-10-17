@@ -1,9 +1,11 @@
 package me.monkeykiller.v2_0_rediscovered.common.etho_slab;
 
+import me.monkeykiller.v2_0_rediscovered.common.etho_slab.EthoEntityAccessor.EthoType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
@@ -35,6 +37,13 @@ public class EthoSlabBlock extends SlabBlock {
         // this.setDefaultState(this.getDefaultState().with(UNSTABLE, false));
     }
 
+    public static EthoType getEthoType(BlockState state) {
+        if (state.getOrEmpty(SlabBlock.TYPE).orElse(null) == SlabType.DOUBLE) {
+            return EthoType.DOUBLE_ETHO;
+        }
+        return EthoType.SINGLE_ETHO;
+    }
+
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         if (!oldState.isOf(state.getBlock())) {
             if (world.isReceivingRedstonePower(pos)) {
@@ -61,8 +70,8 @@ public class EthoSlabBlock extends SlabBlock {
 
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
-            TntEntity tntEntity = new TntEntity(world, (double) pos.getX() + 0.5, (double) pos.getY(), (double) pos.getZ() + 0.5, explosion.getCausingEntity());
-            ((EthoEntityAccessor) tntEntity).setEtho(true);
+            TntEntity tntEntity = new TntEntity(world, pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d, explosion.getCausingEntity());
+            ((EthoEntityAccessor) tntEntity).setEthoType(getEthoType(world.getBlockState(pos)));
             int i = tntEntity.getFuse();
             tntEntity.setFuse((short) (world.random.nextInt(i / 4) + i / 8));
             world.spawnEntity(tntEntity);
@@ -76,7 +85,7 @@ public class EthoSlabBlock extends SlabBlock {
     private static void primeTnt(World world, BlockPos pos, @Nullable LivingEntity igniter) {
         if (!world.isClient) {
             TntEntity tntEntity = new TntEntity(world, (double) pos.getX() + 0.5, (double) pos.getY(), (double) pos.getZ() + 0.5, igniter);
-            ((EthoEntityAccessor) tntEntity).setEtho(true);
+            ((EthoEntityAccessor) tntEntity).setEthoType(getEthoType(world.getBlockState(pos)));
             world.spawnEntity(tntEntity);
             world.playSound(null, tntEntity.getX(), tntEntity.getY(), tntEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
             world.emitGameEvent(igniter, GameEvent.PRIME_FUSE, pos);

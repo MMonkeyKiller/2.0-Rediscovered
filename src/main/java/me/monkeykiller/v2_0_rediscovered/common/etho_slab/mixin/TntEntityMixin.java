@@ -8,42 +8,44 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TntEntity.class)
 public abstract class TntEntityMixin implements EthoEntityAccessor {
-    private static final TrackedData<Boolean> IS_ETHO = DataTracker.registerData(TntEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    @Unique
+    private static final TrackedData<String> ETHO_TYPE = DataTracker.registerData(TntEntity.class, TrackedDataHandlerRegistry.STRING);
 
     @Inject(at = @At("TAIL"), method = "initDataTracker")
     protected void injectDataTracker(CallbackInfo ci) {
         var self = (TntEntity) (Object) this;
-        self.getDataTracker().startTracking(IS_ETHO, false);
+        self.getDataTracker().startTracking(ETHO_TYPE, EthoType.NONE.toString());
     }
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
     public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
         var self = (TntEntity) (Object) this;
-        self.getDataTracker().set(IS_ETHO, nbt.getBoolean("IsEtho"));
+        self.getDataTracker().set(ETHO_TYPE, nbt.getString("EthoType"));
     }
 
     @Inject(at = @At("TAIL"), method = "writeCustomDataToNbt")
     public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
         var self = (TntEntity) (Object) this;
-        nbt.putBoolean("IsEtho", self.getDataTracker().get(IS_ETHO));
+        nbt.putString("EthoType", self.getDataTracker().get(ETHO_TYPE));
     }
 
     @Override
-    public boolean isEtho() {
+    public EthoType getEthoType() {
         var self = (TntEntity) (Object) this;
-        return self.getDataTracker().get(IS_ETHO);
+        return EthoType.valueOf(self.getDataTracker().get(ETHO_TYPE));
     }
 
     @Override
-    public void setEtho(boolean isEtho) {
+    public void setEthoType(EthoType ethoType) {
         var self = (TntEntity) (Object) this;
-        self.getDataTracker().set(IS_ETHO, isEtho);
+        self.getDataTracker().set(ETHO_TYPE, ethoType.toString());
     }
 
     @Inject(at = @At("TAIL"), method = "explode")
@@ -51,7 +53,7 @@ public abstract class TntEntityMixin implements EthoEntityAccessor {
         var self = (TntEntity) (Object) this;
         var random = self.getWorld().random;
 
-        if (random.nextFloat() < 0.25F && this.isEtho()) {
+        if (random.nextFloat() < 0.25F && this.getEthoType() != EthoType.NONE) {
             var closestPlayer = self.getWorld().getClosestPlayer(
                     self.getX(), self.getY(), self.getZ(),
                     20.0D, false);
