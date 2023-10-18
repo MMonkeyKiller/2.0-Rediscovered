@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "verbose": true,
+  "package": "me.monkeykiller.v2_0_rediscovered.common.zombie_piglin_battlesign.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ZombifiedPiglinEntityMixin"
+  ],
+  "client": [
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

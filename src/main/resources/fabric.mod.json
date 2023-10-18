@@ -27,6 +27,7 @@
   },
   "mixins": [
     "v2_0_rediscovered.mixins.super_hostile_mode.json",
+    "v2_0_rediscovered.mixins.zombie_piglin_battlesign.json",
     "v2_0_rediscovered.mixins.horse_entities.json",
     "v2_0_rediscovered.mixins.horse_entities_client.json",
     "v2_0_rediscovered.mixins.fat_entities.json",
