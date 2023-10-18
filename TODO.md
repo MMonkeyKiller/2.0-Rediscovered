@@ -10,7 +10,7 @@
 - [x] Neutral Chickens
 - [x] Mob Fatness
 - [ ] Flying Sheeps
-- [ ] Pigmen battle signs
+- [x] Pigmen battle signs
 - [x] Super Hostile Mode
 - [x] Speech Bubbles
 - [ ] Tinted Glass?
