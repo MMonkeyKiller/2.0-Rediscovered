@@ -9,7 +9,7 @@
 - [x] Furnace Heat
 - [x] Neutral Chickens
 - [x] Mob Fatness
-- [ ] Flying Sheeps
+- [x] Flying Sheeps
 - [x] Pigmen battle signs
 - [x] Super Hostile Mode
 - [x] Speech Bubbles

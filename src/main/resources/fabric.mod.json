@@ -38,7 +38,8 @@
     "v2_0_rediscovered.mixins.chickens_client.json",
     "v2_0_rediscovered.mixins.etho_slab.json",
     "v2_0_rediscovered.mixins.etho_slab_client.json",
-    "v2_0_rediscovered.mixins.torch_off.json"
+    "v2_0_rediscovered.mixins.torch_off.json",
+    "v2_0_rediscovered.mixins.flying_sheeps.json"
   ],
 
   "depends": {
