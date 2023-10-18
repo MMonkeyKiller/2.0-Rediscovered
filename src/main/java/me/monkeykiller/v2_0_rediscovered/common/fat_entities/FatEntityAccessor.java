@@ -4,5 +4,7 @@ public interface FatEntityAccessor {
     byte getFatness();
     void setFatness(int value);
 
-    boolean isFattenable();
+    default boolean isFattenable() {
+        return false;
+    }
 }
