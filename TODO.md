@@ -8,7 +8,7 @@
 - [ ] Floppers
 - [x] Furnace Heat
 - [x] Neutral Chickens
-- [ ] Mob Fatness (fat entity rendering missing)
+- [x] Mob Fatness
 - [ ] Flying Sheeps
 - [ ] Pigmen battle signs
 - [x] Super Hostile Mode

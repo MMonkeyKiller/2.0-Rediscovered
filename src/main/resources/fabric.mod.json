@@ -29,6 +29,8 @@
     "v2_0_rediscovered.mixins.super_hostile_mode.json",
     "v2_0_rediscovered.mixins.horse_entities.json",
     "v2_0_rediscovered.mixins.horse_entities_client.json",
+    "v2_0_rediscovered.mixins.fat_entities.json",
+    "v2_0_rediscovered.mixins.fat_entities_client.json",
     "v2_0_rediscovered.mixins.furnace_heat.json",
     "v2_0_rediscovered.mixins.speech_bubbles.json",
     "v2_0_rediscovered.mixins.chickens.json",
