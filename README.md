@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="https://github.com/MMonkeyKiller/2.0-Rediscovered/assets/37459591/a18966cd-bb7c-4865-83c1-292326702fa5" height="300" />
+  <img src="https://github.com/MMonkeyKiller/2.0-Rediscovered/assets/37459591/a18966cd-bb7c-4865-83c1-292326702fa5" height="300" alt="2.0 rediscovered logo" />
   <h1>2.0 Rediscovered</h1>
   <div>
-    <img src="https://img.shields.io/badge/mod%20loader-fabric-d64541?style=flat-square" />
-    <img src="https://img.shields.io/badge/environment-both-4caf50?style=flat-square" />
+    <img src="https://img.shields.io/badge/mod%20loader-fabric-d64541?style=flat-square" alt="modloader: fabric" />
+    <img src="https://img.shields.io/badge/environment-both-4caf50?style=flat-square" alt="environment: both" />
   </div>
 </div>
 
@@ -14,7 +14,7 @@ Have you ever wanted to implement Minecraft 2.0's joke features on the latest ve
 - [x] Torches that burn out
 - [ ] Pink wither
 - [x] Horses and Ponies
-- [ ] Redstone Bugs
+- [x] Redstone Bugs
 - [x] Diamond Chickens
 - [ ] Floppers
 - [x] Furnace Heat

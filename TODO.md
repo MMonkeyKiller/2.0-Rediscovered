@@ -3,7 +3,7 @@
 - [x] Torches that burn out
 - [ ] Pink wither
 - [x] Horses and Ponies
-- [ ] Redstone Bugs
+- [x] Redstone Bugs
 - [x] Diamond Chickens
 - [ ] Floppers
 - [x] Furnace Heat
@@ -14,3 +14,5 @@
 - [x] Super Hostile Mode
 - [x] Speech Bubbles
 - [ ] Tinted Glass?
+
+- [ ] Add remaining config
