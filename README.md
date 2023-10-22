@@ -1,9 +1,12 @@
 <div align="center">
-  <img src="https://github.com/MMonkeyKiller/2.0-Rediscovered/assets/37459591/a18966cd-bb7c-4865-83c1-292326702fa5" height="300" alt="2.0 rediscovered logo" />
+  <img src="https://github.com/MMonkeyKiller/2.0-Rediscovered/assets/37459591/a18966cd-bb7c-4865-83c1-292326702fa5" width="490.86" alt="2.0 rediscovered logo" />
   <h1>2.0 Rediscovered</h1>
   <div>
-    <img src="https://img.shields.io/badge/mod%20loader-fabric-d64541?style=flat-square" alt="modloader: fabric" />
-    <img src="https://img.shields.io/badge/environment-both-4caf50?style=flat-square" alt="environment: both" />
+
+[![Modrinth](https://img.shields.io/modrinth/dt/2.0-rediscovered?color=00AF5C&label=Modrinth&style=flat&logo=modrinth)](https://modrinth.com/mod/2.0-rediscovered)
+![Fabric Modloader](https://img.shields.io/badge/mod%20loader-fabric-d64541?style=flat)
+![Both Environments](https://img.shields.io/badge/environment-both-4caf50?style=flat)
+
   </div>
 </div>
 
