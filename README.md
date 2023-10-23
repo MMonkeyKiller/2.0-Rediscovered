@@ -15,7 +15,7 @@ Have you ever wanted to implement Minecraft 2.0's joke features on the latest ve
 ## Features:
 - [x] Etho Slabs
 - [x] Torches that burn out
-- [ ] Pink wither
+- [x] Pink wither
 - [x] Horses and Ponies
 - [x] Redstone Bugs
 - [x] Diamond Chickens

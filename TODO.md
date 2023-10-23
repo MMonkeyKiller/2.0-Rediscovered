@@ -1,7 +1,7 @@
 # Things to do
 - [x] Etho Slab
 - [x] Torches that burn out
-- [ ] Pink wither
+- [x] Pink wither
 - [x] Horses and Ponies
 - [x] Redstone Bugs
 - [x] Diamond Chickens
