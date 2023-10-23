@@ -1,4 +1,6 @@
 {
   "block.v2_0_rediscovered.etho_slab": "Etho Slab",
-  "block.v2_0_rediscovered.torch_off": "Torch (Burnt-out)"
+  "block.v2_0_rediscovered.torch_off": "Torch (Burnt-out)",
+  "entity.v2_0_rediscovered.wither_hug": "Pink Wither",
+  "entity.v2_0_rediscovered.wither_love": "Pink Wither Love"
 }

@@ -4,6 +4,8 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import me.monkeykiller.v2_0_rediscovered.common.configuration.ConfigUtils;
 import me.monkeykiller.v2_0_rediscovered.common.etho_slab.EthoSlabBlock;
+import me.monkeykiller.v2_0_rediscovered.common.pink_wither.WitherHugEntity;
+import me.monkeykiller.v2_0_rediscovered.common.pink_wither.WitherLoveEntity;
 import me.monkeykiller.v2_0_rediscovered.common.speech_bubbles.SpeechBubbleEntity;
 import me.monkeykiller.v2_0_rediscovered.common.superhostilemode.SuperHostileModeInstance;
 import me.monkeykiller.v2_0_rediscovered.common.torch_off.TorchOffBlock;
@@ -12,6 +14,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.block.Block;
@@ -42,6 +45,18 @@ public class V2_0_Rediscovered implements ModInitializer {
                     .dimensions(EntityDimensions.fixed(0.2f, 0.2f))
                     .build());
 
+    public static final EntityType<WitherHugEntity> WITHER_HUG = Registry.register(
+            Registries.ENTITY_TYPE, identifier("wither_hug"),
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, WitherHugEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.9f, 3.5f))
+                    .build());
+
+    public static final EntityType<WitherLoveEntity> WITHER_LOVE = Registry.register(
+            Registries.ENTITY_TYPE, identifier("wither_love"),
+            FabricEntityTypeBuilder.<WitherLoveEntity>create(SpawnGroup.MISC, WitherLoveEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.3125F, 0.3125F))
+                    .build());
+
     public static final Block ETHO_SLAB_BLOCK = register("etho_slab", new EthoSlabBlock(Settings.copy(Blocks.TNT).strength(2.0F, 10.0F).sounds(BlockSoundGroup.GRASS)));
     public static final Item ETHO_SLAB_ITEM = register("etho_slab", new BlockItem(ETHO_SLAB_BLOCK, new FabricItemSettings()));
 
@@ -57,6 +72,8 @@ public class V2_0_Rediscovered implements ModInitializer {
     @Override
     public void onInitialize() {
         ConfigUtils.load();
+
+        FabricDefaultAttributeRegistry.register(WITHER_HUG, WitherHugEntity.createWitherHugAttributes());
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(content -> {
             content.add(ETHO_SLAB_ITEM);

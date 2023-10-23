@@ -41,7 +41,8 @@
     "v2_0_rediscovered.mixins.torch_off.json",
     "v2_0_rediscovered.mixins.flying_sheeps.json",
     "v2_0_rediscovered.mixins.redstone_bug.json",
-    "v2_0_rediscovered.mixins.redstone_bug_client.json"
+    "v2_0_rediscovered.mixins.redstone_bug_client.json",
+    "v2_0_rediscovered.mixins.pink_wither.json"
   ],
 
   "depends": {
