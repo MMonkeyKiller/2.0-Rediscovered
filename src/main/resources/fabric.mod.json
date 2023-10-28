@@ -18,6 +18,9 @@
 
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "me.monkeykiller.v2_0_rediscovered.datagen.V2_0_RediscoveredDataGenerator"
+    ],
     "main": [
       "me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered"
     ],
