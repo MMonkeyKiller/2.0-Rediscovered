@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "tinted_glass",
+  "key": {
+    "#": {
+      "item": "minecraft:tinted_glass"
+    },
+    "X": {
+      "item": "minecraft:red_dye"
+    }
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "item": "v2_0_rediscovered:red_tinted_glass"
+  },
+  "show_notification": true
+}

@@ -6,8 +6,12 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.VanillaRecipeProvider;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
+
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.*;
 
 public class ModRecipeProvider extends FabricRecipeProvider {
     public ModRecipeProvider(FabricDataOutput output) {
@@ -16,11 +20,40 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void generate(RecipeExporter exporter) {
-        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, V2_0_Rediscovered.ETHO_SLAB_ITEM, 6)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ETHO_SLAB_ITEM, 6)
                 .pattern("###")
                 .input('#', Blocks.TNT)
                 .criterion(hasItem(Items.TNT), conditionsFromItem(Items.TNT))
                 .showNotification(true)
-                .offerTo(exporter, V2_0_Rediscovered.identifier(getRecipeName(V2_0_Rediscovered.ETHO_SLAB_ITEM)));
+                .offerTo(exporter, V2_0_Rediscovered.identifier(getRecipeName(ETHO_SLAB_ITEM)));
+
+        offerTintedGlassDyeingRecipe(exporter, WHITE_TINTED_GLASS_BLOCK, Items.WHITE_DYE);
+        offerTintedGlassDyeingRecipe(exporter, ORANGE_TINTED_GLASS_BLOCK, Items.ORANGE_DYE);
+        offerTintedGlassDyeingRecipe(exporter, MAGENTA_TINTED_GLASS_BLOCK, Items.MAGENTA_DYE);
+        offerTintedGlassDyeingRecipe(exporter, LIGHT_BLUE_TINTED_GLASS_BLOCK, Items.LIGHT_BLUE_DYE);
+        offerTintedGlassDyeingRecipe(exporter, YELLOW_TINTED_GLASS_BLOCK, Items.YELLOW_DYE);
+        offerTintedGlassDyeingRecipe(exporter, LIME_TINTED_GLASS_BLOCK, Items.LIME_DYE);
+        offerTintedGlassDyeingRecipe(exporter, PINK_TINTED_GLASS_BLOCK, Items.PINK_DYE);
+        offerTintedGlassDyeingRecipe(exporter, GRAY_TINTED_GLASS_BLOCK, Items.GRAY_DYE);
+        offerTintedGlassDyeingRecipe(exporter, SILVER_TINTED_GLASS_BLOCK, Items.LIGHT_GRAY_DYE);
+        offerTintedGlassDyeingRecipe(exporter, CYAN_TINTED_GLASS_BLOCK, Items.CYAN_DYE);
+        offerTintedGlassDyeingRecipe(exporter, PURPLE_TINTED_GLASS_BLOCK, Items.PURPLE_DYE);
+        offerTintedGlassDyeingRecipe(exporter, BLUE_TINTED_GLASS_BLOCK, Items.BLUE_DYE);
+        offerTintedGlassDyeingRecipe(exporter, BROWN_TINTED_GLASS_BLOCK, Items.BROWN_DYE);
+        offerTintedGlassDyeingRecipe(exporter, GREEN_TINTED_GLASS_BLOCK, Items.GREEN_DYE);
+        offerTintedGlassDyeingRecipe(exporter, RED_TINTED_GLASS_BLOCK, Items.RED_DYE);
+        offerTintedGlassDyeingRecipe(exporter, BLACK_TINTED_GLASS_BLOCK, Items.BLACK_DYE);
+    }
+
+    private void offerTintedGlassDyeingRecipe(RecipeExporter exporter, ItemConvertible output, ItemConvertible input) {
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, output, 8)
+                .input('#', Blocks.TINTED_GLASS)
+                .input('X', input)
+                .pattern("###")
+                .pattern("#X#")
+                .pattern("###")
+                .group("tinted_glass") // TODO
+                .criterion("has_tinted_glass", VanillaRecipeProvider.conditionsFromItem(Items.TINTED_GLASS))
+                .offerTo(exporter);
     }
 }

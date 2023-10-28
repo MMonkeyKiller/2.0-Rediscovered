@@ -10,8 +10,8 @@
     "###"
   ],
   "result": {
-    "item": "v2_0_rediscovered:etho_slab",
-    "count": 6
+    "count": 6,
+    "item": "v2_0_rediscovered:etho_slab"
   },
   "show_notification": true
 }

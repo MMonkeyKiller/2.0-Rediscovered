@@ -1,6 +1,22 @@
 {
+  "block.v2_0_rediscovered.black_tinted_glass": "Black Tinted Glass",
+  "block.v2_0_rediscovered.blue_tinted_glass": "Blue Tinted Glass",
+  "block.v2_0_rediscovered.brown_tinted_glass": "Brown Tinted Glass",
+  "block.v2_0_rediscovered.cyan_tinted_glass": "Cyan Tinted Glass",
   "block.v2_0_rediscovered.etho_slab": "Etho Slab",
+  "block.v2_0_rediscovered.gray_tinted_glass": "Gray Tinted Glass",
+  "block.v2_0_rediscovered.green_tinted_glass": "Green Tinted Glass",
+  "block.v2_0_rediscovered.light_blue_tinted_glass": "Light Blue Tinted Glass",
+  "block.v2_0_rediscovered.lime_tinted_glass": "Lime Tinted Glass",
+  "block.v2_0_rediscovered.magenta_tinted_glass": "Magenta Tinted Glass",
+  "block.v2_0_rediscovered.orange_tinted_glass": "Orange Tinted Glass",
+  "block.v2_0_rediscovered.pink_tinted_glass": "Pink Tinted Glass",
+  "block.v2_0_rediscovered.purple_tinted_glass": "Purple Tinted Glass",
+  "block.v2_0_rediscovered.red_tinted_glass": "Red Tinted Glass",
+  "block.v2_0_rediscovered.silver_tinted_glass": "Light Gray Tinted Glass",
   "block.v2_0_rediscovered.torch_off": "Torch (Burnt-out)",
+  "block.v2_0_rediscovered.white_tinted_glass": "White Tinted Glass",
+  "block.v2_0_rediscovered.yellow_tinted_glass": "Yellow Tinted Glass",
   "entity.v2_0_rediscovered.wither_hug": "Pink Wither",
   "entity.v2_0_rediscovered.wither_love": "Pink Wither Love"
 }

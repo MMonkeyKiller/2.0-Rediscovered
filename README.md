@@ -27,4 +27,4 @@ Have you ever wanted to implement Minecraft 2.0's joke features on the latest ve
 - [x] Pigmen battle signs
 - [x] Super Hostile Mode
 - [x] Speech Bubbles
-- [ ] Tinted Glass?
+- [x] Tinted Glass

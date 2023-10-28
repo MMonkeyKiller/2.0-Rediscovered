@@ -13,6 +13,6 @@
 - [x] Pigmen battle signs
 - [x] Super Hostile Mode
 - [x] Speech Bubbles
-- [ ] Tinted Glass?
+- [x] Tinted Glass
 
 - [ ] Add remaining config
