@@ -4,6 +4,7 @@
   "block.v2_0_rediscovered.brown_tinted_glass": "Brown Tinted Glass",
   "block.v2_0_rediscovered.cyan_tinted_glass": "Cyan Tinted Glass",
   "block.v2_0_rediscovered.etho_slab": "Etho Slab",
+  "block.v2_0_rediscovered.flopper": "Flopper",
   "block.v2_0_rediscovered.gray_tinted_glass": "Gray Tinted Glass",
   "block.v2_0_rediscovered.green_tinted_glass": "Green Tinted Glass",
   "block.v2_0_rediscovered.light_blue_tinted_glass": "Light Blue Tinted Glass",
@@ -17,6 +18,7 @@
   "block.v2_0_rediscovered.torch_off": "Torch (Burnt-out)",
   "block.v2_0_rediscovered.white_tinted_glass": "White Tinted Glass",
   "block.v2_0_rediscovered.yellow_tinted_glass": "Yellow Tinted Glass",
+  "container.flopper": "Flopper",
   "entity.v2_0_rediscovered.wither_hug": "Pink Wither",
   "entity.v2_0_rediscovered.wither_love": "Pink Wither Love"
 }

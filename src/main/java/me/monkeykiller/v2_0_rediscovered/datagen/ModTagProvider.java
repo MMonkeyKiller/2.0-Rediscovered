@@ -1,14 +1,14 @@
 package me.monkeykiller.v2_0_rediscovered.datagen;
 
-import me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 
 import java.util.concurrent.CompletableFuture;
+
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.*;
 
 public class ModTagProvider extends FabricTagProvider.BlockTagProvider {
     public ModTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
@@ -17,10 +17,18 @@ public class ModTagProvider extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        getOrCreateTagBuilder(BlockTags.IMPERMEABLE)
-                .add(V2_0_Rediscovered.TINTED_GLASS_ITEMS
-                        .values().stream()
-                        .map(BlockItem::getBlock)
-                        .toArray(Block[]::new));
+        getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(FLOPPER_BLOCK);
+        configureColoredTintedGlassTags();
+    }
+
+    private void configureColoredTintedGlassTags() {
+        var impermeableTag = getOrCreateTagBuilder(BlockTags.IMPERMEABLE);
+        var glassBlocksTag = getOrCreateTagBuilder(ConventionalBlockTags.GLASS_BLOCKS);
+
+        for (var blockItem : TINTED_GLASS_ITEMS.values()) {
+            var block = blockItem.getBlock();
+            impermeableTag.add(block);
+            glassBlocksTag.add(block);
+        }
     }
 }

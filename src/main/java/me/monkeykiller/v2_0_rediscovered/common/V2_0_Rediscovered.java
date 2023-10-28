@@ -4,6 +4,8 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import me.monkeykiller.v2_0_rediscovered.common.configuration.ConfigUtils;
 import me.monkeykiller.v2_0_rediscovered.common.etho_slab.EthoSlabBlock;
+import me.monkeykiller.v2_0_rediscovered.common.floppers.FlopperBlock;
+import me.monkeykiller.v2_0_rediscovered.common.floppers.FlopperBlockEntity;
 import me.monkeykiller.v2_0_rediscovered.common.pink_wither.WitherHugEntity;
 import me.monkeykiller.v2_0_rediscovered.common.pink_wither.WitherLoveEntity;
 import me.monkeykiller.v2_0_rediscovered.common.speech_bubbles.SpeechBubbleEntity;
@@ -16,12 +18,14 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -70,6 +74,9 @@ public class V2_0_Rediscovered implements ModInitializer {
     public static final Block WALL_TORCH_OFF_BLOCK = register("wall_torch_off", new WallTorchOffBlock(Settings.copy(Blocks.WALL_TORCH).dropsLike(TORCH_OFF_BLOCK).luminance(state -> 0)));
     public static final Item TORCH_OFF_ITEM = register("torch_off", new VerticallyAttachableBlockItem(TORCH_OFF_BLOCK, WALL_TORCH_OFF_BLOCK, new FabricItemSettings(), Direction.DOWN));
 
+    public static final Block FLOPPER_BLOCK = register("flopper", new FlopperBlock(Settings.copy(Blocks.DROPPER)));
+    public static final Item FLOPPER_ITEM = register("flopper", new BlockItem(FLOPPER_BLOCK, new FabricItemSettings()));
+
     public static final Map<Identifier, BlockItem> TINTED_GLASS_ITEMS = new HashMap<>();
 
     public static final Block WHITE_TINTED_GLASS_BLOCK = registerTintedGlass("white_tinted_glass", 0xFFFFFF, MapColor.WHITE);
@@ -89,6 +96,10 @@ public class V2_0_Rediscovered implements ModInitializer {
     public static final Block RED_TINTED_GLASS_BLOCK = registerTintedGlass("red_tinted_glass", 0x993333, MapColor.RED);
     public static final Block BLACK_TINTED_GLASS_BLOCK = registerTintedGlass("black_tinted_glass", 0x191919, MapColor.BLACK);
 
+    public static final BlockEntityType<FlopperBlockEntity> FLOPPER_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE, identifier("flopper_block_entity"),
+            FabricBlockEntityTypeBuilder.create(FlopperBlockEntity::new, FLOPPER_BLOCK).build()
+    );
 
     public static Identifier identifier(@NotNull String path) {
         return new Identifier(MOD_ID, path);
@@ -104,6 +115,10 @@ public class V2_0_Rediscovered implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(content -> {
             content.add(ETHO_SLAB_ITEM);
             content.add(TORCH_OFF_ITEM);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
+            content.add(FLOPPER_ITEM);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
@@ -124,7 +139,11 @@ public class V2_0_Rediscovered implements ModInitializer {
     }
 
     private static Block registerTintedGlass(@NonNull String id, int color, @NonNull MapColor mapColor) {
-        var settings = FabricBlockSettings.copy(Blocks.TINTED_GLASS).mapColor(mapColor).nonOpaque();
+        var settings = FabricBlockSettings.copy(Blocks.GLASS)
+                .mapColor(mapColor).nonOpaque()
+                .allowsSpawning(Blocks::never).solidBlock(Blocks::never)
+                .suffocates(Blocks::never)
+                .blockVision(Blocks::never);
         var block = register(id, new ColoredTintedGlassBlock(settings, color));
         TINTED_GLASS_ITEMS.put(identifier(id), register(id, new BlockItem(block, new FabricItemSettings())));
         return block;

@@ -12,8 +12,11 @@ public class ModLanguageProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
+        translationBuilder.add("container.flopper", "Flopper");
+
         translationBuilder.add(ETHO_SLAB_BLOCK, "Etho Slab");
         translationBuilder.add(TORCH_OFF_BLOCK, "Torch (Burnt-out)");
+        translationBuilder.add(FLOPPER_BLOCK, "Flopper");
 
         translationBuilder.add(BLACK_TINTED_GLASS_BLOCK, "Black Tinted Glass");
         translationBuilder.add(RED_TINTED_GLASS_BLOCK, "Red Tinted Glass");

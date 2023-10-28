@@ -23,6 +23,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
     public void generate() {
         addDrop(ETHO_SLAB_BLOCK, createEthoSlabLootTable());
         addDrop(TORCH_OFF_BLOCK, createTorchOffLootTable());
+        addDrop(FLOPPER_BLOCK);
 
         for (var blockItem : TINTED_GLASS_ITEMS.values()) {
             addDropWithSilkTouch(blockItem.getBlock());

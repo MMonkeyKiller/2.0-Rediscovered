@@ -1,12 +1,11 @@
 package me.monkeykiller.v2_0_rediscovered.datagen;
 
-import me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
-import net.minecraft.data.server.recipe.VanillaRecipeProvider;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
@@ -25,7 +24,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('#', Blocks.TNT)
                 .criterion(hasItem(Items.TNT), conditionsFromItem(Items.TNT))
                 .showNotification(true)
-                .offerTo(exporter, V2_0_Rediscovered.identifier(getRecipeName(ETHO_SLAB_ITEM)));
+                .offerTo(exporter);
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, FLOPPER_BLOCK)
+                .input(Blocks.DROPPER)
+                .criterion(hasItem(Items.DROPPER), conditionsFromItem(Items.DROPPER))
+                .offerTo(exporter, identifier("dropper_to_flopper"));
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Blocks.DROPPER)
+                .input(FLOPPER_BLOCK)
+                .criterion(hasItem(FLOPPER_ITEM), conditionsFromItem(FLOPPER_ITEM))
+                .offerTo(exporter, identifier("flopper_to_dropper"));
 
         offerTintedGlassDyeingRecipe(exporter, WHITE_TINTED_GLASS_BLOCK, Items.WHITE_DYE);
         offerTintedGlassDyeingRecipe(exporter, ORANGE_TINTED_GLASS_BLOCK, Items.ORANGE_DYE);
@@ -52,8 +61,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern("###")
                 .pattern("#X#")
                 .pattern("###")
-                .group("tinted_glass") // TODO
-                .criterion("has_tinted_glass", VanillaRecipeProvider.conditionsFromItem(Items.TINTED_GLASS))
+                .group("tinted_glass")
+                .criterion(hasItem(Items.TINTED_GLASS), conditionsFromItem(Items.TINTED_GLASS))
                 .offerTo(exporter);
     }
 }

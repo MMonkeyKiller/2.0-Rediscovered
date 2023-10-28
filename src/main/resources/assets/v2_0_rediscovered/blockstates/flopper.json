@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "v2_0_rediscovered:block/flopper_vertical",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "v2_0_rediscovered:block/flopper",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "v2_0_rediscovered:block/flopper"
+    },
+    "facing=south": {
+      "model": "v2_0_rediscovered:block/flopper",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "v2_0_rediscovered:block/flopper_vertical"
+    },
+    "facing=west": {
+      "model": "v2_0_rediscovered:block/flopper",
+      "y": 270
+    }
+  }
+}
