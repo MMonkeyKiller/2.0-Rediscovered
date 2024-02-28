@@ -34,7 +34,7 @@ public class EthoSlabBlock extends SlabBlock {
 
     public EthoSlabBlock(Settings settings) {
         super(settings);
-        // this.setDefaultState(this.getDefaultState().with(UNSTABLE, false));
+        this.setDefaultState(this.getDefaultState().with(UNSTABLE, false));
     }
 
     public static EthoType getEthoType(BlockState state) {
