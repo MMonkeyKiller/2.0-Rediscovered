@@ -17,6 +17,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(RedstoneWireBlock.class)
 public abstract class RedstoneWireBlockMixin {
     @Shadow
@@ -28,14 +30,15 @@ public abstract class RedstoneWireBlockMixin {
 
     @Inject(at = @At("TAIL"), method = "update")
     public void update(World world, BlockPos pos, BlockState state, CallbackInfo ci) {
+        if (!CONFIG_COMMON.redstone_bugs.enabled) return;
         var power = state.get(POWER);
         var receivedPower = this.getReceivedRedstonePower(world, pos);
         var random = world.getRandom();
 
         if (power < receivedPower) {
-            var probability = 0.01F; // Initial probability for the first silverfish
+            var probability = CONFIG_COMMON.redstone_bugs.base_spawn_probability; // Initial probability for the first silverfish
             byte radius = 3;
-            probability += (float) world.getNonSpectatingEntities(SilverfishEntity.class, Box.of(pos.toCenterPos(), radius * 2, radius * 2, radius * 2)).size() * 0.05F; // 5% per nearby silverfish
+            probability += (float) world.getNonSpectatingEntities(SilverfishEntity.class, Box.of(pos.toCenterPos(), radius * 2, radius * 2, radius * 2)).size() * CONFIG_COMMON.redstone_bugs.spawn_probability_multiplier;
 
             if (random.nextFloat() < probability) {
                 var silverfish = new SilverfishEntity(EntityType.SILVERFISH, world);

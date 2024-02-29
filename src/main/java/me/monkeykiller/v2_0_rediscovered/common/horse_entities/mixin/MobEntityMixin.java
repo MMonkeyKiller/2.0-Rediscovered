@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin implements HorseEntityAccessor {
     @Inject(at = @At("TAIL"), method = "initDataTracker")
@@ -27,6 +29,7 @@ public abstract class MobEntityMixin implements HorseEntityAccessor {
 
     @Inject(at = @At("TAIL"), method = "initialize")
     public void initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
+        if (!CONFIG_COMMON.horses_and_ponies.enabled) return;
         var self = (MobEntity) (Object) this;
         if (self instanceof CowEntity || self instanceof PigEntity) {
             setupHorse();
@@ -35,6 +38,7 @@ public abstract class MobEntityMixin implements HorseEntityAccessor {
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
     public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
+        if (!CONFIG_COMMON.horses_and_ponies.enabled) return;
         var self = ((MobEntity) (Object) this);
         if (self instanceof CowEntity || self instanceof PigEntity) {
             setHorse(nbt.getBoolean("IsHorse"));
@@ -43,6 +47,7 @@ public abstract class MobEntityMixin implements HorseEntityAccessor {
 
     @Inject(at = @At("TAIL"), method = "writeCustomDataToNbt")
     public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
+        if (!CONFIG_COMMON.horses_and_ponies.enabled) return;
         var self = ((MobEntity) (Object) this);
         if (self instanceof CowEntity || self instanceof PigEntity) {
             nbt.putBoolean("IsHorse", isHorse());

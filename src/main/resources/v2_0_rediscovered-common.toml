@@ -1,0 +1,64 @@
+[etho_slab]
+enabled = true
+should_place_anvil = false
+
+[burnt_out_torches]
+enabled = true
+
+[pink_wither]
+enabled = true
+allow_drops = false
+
+[horses_and_ponies]
+enabled = true
+
+[redstone_bugs]
+enabled = false
+base_spawn_probability = 0.01
+spawn_probability_multiplier = 0.05 # multiplied by the amount of nearby bugs, added to the base spawn probability
+
+[diamond_chickens]
+enabled = true
+spawn_probability = 0.07
+should_explode = false
+special_drops = true
+special_drop_chance = 1
+
+[floppers]
+enabled = true
+
+[furnace_heat]
+enabled = false
+
+[neutral_chickens]
+enabled = true
+spawn_clones = false
+
+[mob_fatness]
+enabled = false
+
+[flying_sheeps]
+enabled = true
+
+[pigman_battle_signs]
+enabled = false
+
+[super_hostile_mode]
+enabled = false
+next_spawn_wave_cooldown_min = 40 # seconds
+next_spawn_wave_cooldown_max = 90 # seconds
+spawn_wave_duration_min = 15 # seconds
+spawn_wave_duration_max = 30 # seconds
+spawn_wave_attempts_min = 100
+spawn_wave_attempts_max = 200
+apply_blindness = false
+spawn_fake_lightning = false
+only_activate_on_survival = true
+
+[speech_bubbles]
+enabled = true
+spawn_chance_ores = 0.05
+spawn_chance_blocks = 0.01
+
+[tinted_glass]
+enabled = true

@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.stream.Stream;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(ServerPlayerInteractionManager.class)
 public abstract class ServerPlayerInteractionManagerMixin {
     @Shadow
@@ -22,8 +24,9 @@ public abstract class ServerPlayerInteractionManagerMixin {
 
     @Inject(at = @At(value = "TAIL"), method = "continueMining")
     private void injectBubbleSpawn(BlockState state, BlockPos pos, int failedStartMiningTime, CallbackInfoReturnable<Float> cir) {
-        float prob = Stream.of(BlockTags.COAL_ORES, BlockTags.COPPER_ORES, BlockTags.DIAMOND_ORES, BlockTags.GOLD_ORES, BlockTags.EMERALD_ORES, BlockTags.IRON_ORES, BlockTags.REDSTONE_ORES, BlockTags.LAPIS_ORES)
-                .anyMatch(state::isIn) ? 0.05F : 0.01F;
+        if (!CONFIG_COMMON.speech_bubbles.enabled) return;
+        float prob = (float) (Stream.of(BlockTags.COAL_ORES, BlockTags.COPPER_ORES, BlockTags.DIAMOND_ORES, BlockTags.GOLD_ORES, BlockTags.EMERALD_ORES, BlockTags.IRON_ORES, BlockTags.REDSTONE_ORES, BlockTags.LAPIS_ORES)
+                .anyMatch(state::isIn) ? CONFIG_COMMON.speech_bubbles.spawn_chance_ores : CONFIG_COMMON.speech_bubbles.spawn_chance_blocks);
 
         if (this.world.random.nextFloat() >= prob) return;
         var bubbles = this.world.getEntitiesByClass(SpeechBubbleEntity.class, Box.from(pos.toCenterPos()), e -> true);

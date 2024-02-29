@@ -21,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(FlowerPotBlock.class)
 public class FlowerPotBlockMixin {
     @Unique
@@ -32,6 +34,7 @@ public class FlowerPotBlockMixin {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z", shift = At.Shift.AFTER), method = "onUse")
     public void onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
+        if (!CONFIG_COMMON.pink_wither.enabled) return;
         var result = witherHugPattern.searchAround(world, pos);
         if (result == null) return;
         var witherHugEntity = V2_0_Rediscovered.WITHER_HUG.create(world);

@@ -23,6 +23,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(MobEntity.class)
 public class MobEntityMixin implements FatEntityAccessor {
     @Unique
@@ -38,7 +40,7 @@ public class MobEntityMixin implements FatEntityAccessor {
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
     public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
-        if (isFattenable()) {
+        if (CONFIG_COMMON.mob_fatness.enabled && isFattenable()) {
             setFatness(nbt.getByte("Fatness"));
         }
     }
@@ -53,7 +55,7 @@ public class MobEntityMixin implements FatEntityAccessor {
     @Inject(at = @At("TAIL"), method = "interact", cancellable = true)
     public void fatnessInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         var self = (MobEntity) (Object) this;
-        if (!isFattenable()) return;
+        if (!CONFIG_COMMON.mob_fatness.enabled || !isFattenable()) return;
         int newFatness;
 
         var item = player.getStackInHand(hand);

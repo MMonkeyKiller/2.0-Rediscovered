@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin implements RedstoneBugAccessor {
     @Inject(at = @At("TAIL"), method = "initDataTracker")
@@ -21,6 +23,7 @@ public abstract class MobEntityMixin implements RedstoneBugAccessor {
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
     public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
+        if (!CONFIG_COMMON.redstone_bugs.enabled) return;
         var self = (MobEntity) (Object) this;
         if (self instanceof SilverfishEntity) {
             setColor(nbt.getInt("Color"));

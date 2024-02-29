@@ -2,7 +2,7 @@ package me.monkeykiller.v2_0_rediscovered.common;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import me.monkeykiller.v2_0_rediscovered.common.configuration.ConfigUtils;
+import me.monkeykiller.v2_0_rediscovered.common.configuration.ConfigCommon;
 import me.monkeykiller.v2_0_rediscovered.common.etho_slab.EthoSlabBlock;
 import me.monkeykiller.v2_0_rediscovered.common.floppers.FlopperBlock;
 import me.monkeykiller.v2_0_rediscovered.common.floppers.FlopperBlockEntity;
@@ -48,6 +48,8 @@ import java.util.Map;
 public class V2_0_Rediscovered implements ModInitializer {
     public static final String MOD_ID = "v2_0_rediscovered";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+
+    public static final ConfigCommon CONFIG_COMMON = ConfigCommon.getConfig();
 
     public static final EntityType<SpeechBubbleEntity> SPEECH_BUBBLE = Registry.register(
             Registries.ENTITY_TYPE, identifier("speech_bubble"),
@@ -108,24 +110,22 @@ public class V2_0_Rediscovered implements ModInitializer {
     @SneakyThrows
     @Override
     public void onInitialize() {
-        ConfigUtils.load();
-
         FabricDefaultAttributeRegistry.register(WITHER_HUG, WitherHugEntity.createWitherHugAttributes());
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(content -> {
-            content.add(ETHO_SLAB_ITEM);
-            content.add(TORCH_OFF_ITEM);
+            if (CONFIG_COMMON.etho_slab.enabled) content.add(ETHO_SLAB_ITEM);
+            if (CONFIG_COMMON.burnt_out_torches.enabled) content.add(TORCH_OFF_ITEM);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
-            content.add(FLOPPER_ITEM);
+            if (CONFIG_COMMON.floppers.enabled) content.add(FLOPPER_ITEM);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
-            TINTED_GLASS_ITEMS.values().forEach(content::add);
+            if (CONFIG_COMMON.tinted_glass.enabled) TINTED_GLASS_ITEMS.values().forEach(content::add);
         });
 
-        if (ConfigUtils.isSuperHostileModeEnabled()) {
+        if (CONFIG_COMMON.super_hostile_mode.enabled) {
             ServerTickEvents.END_WORLD_TICK.register(world -> {
                 SuperHostileModeInstance.get(world).tick();
             });

@@ -32,6 +32,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(ChickenEntity.class)
 public abstract class ChickenEntityMixin extends MobEntity implements DiamondChickenAccessor {
     @Unique
@@ -54,7 +56,11 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
     @Override
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
         var data = super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
-        if (this.random.nextFloat() < 0.07F) this.setDiamondChicken(true);
+        if (CONFIG_COMMON.diamond_chickens.enabled) {
+            if (this.random.nextFloat() < CONFIG_COMMON.diamond_chickens.spawn_probability) {
+                this.setDiamondChicken(true);
+            }
+        }
         return data;
     }
 
@@ -68,19 +74,25 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
 
     @Inject(at = @At("RETURN"), method = "createChickenAttributes", cancellable = true)
     private static void createMobAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-        cir.setReturnValue(cir.getReturnValue().add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4.0));
+        var attributes = cir.getReturnValue();
+        if (CONFIG_COMMON.neutral_chickens.enabled) {
+            attributes = attributes.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4.0);
+        }
+        cir.setReturnValue(attributes);
     }
 
     @Inject(at = @At("TAIL"), method = "initGoals")
     protected void injectCustomGoals(CallbackInfo ci) {
         var self = (ChickenEntity) (Object) this;
-        this.goalSelector.add(4, new MeleeAttackGoal(self, 1f, true));
-        this.targetSelector.add(3, new RevengeGoal(self));
+        if (CONFIG_COMMON.neutral_chickens.enabled) {
+            this.goalSelector.add(4, new MeleeAttackGoal(self, 1f, true));
+            this.targetSelector.add(3, new RevengeGoal(self));
+        }
     }
 
     @Redirect(method = "initGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/goal/GoalSelector;add(ILnet/minecraft/entity/ai/goal/Goal;)V"))
     public void add(GoalSelector instance, int priority, Goal goal) {
-        if (instance == null) return;
+        if (!CONFIG_COMMON.neutral_chickens.enabled || instance == null) return;
         if (!(goal instanceof EscapeDangerGoal)) {
             instance.add(priority, goal);
         }
@@ -88,6 +100,7 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AnimalEntity;tickMovement()V", shift = At.Shift.AFTER), method = "tickMovement")
     public void getNearestAttackTarget(CallbackInfo ci) {
+        if (!CONFIG_COMMON.neutral_chickens.enabled) return;
         if (!this.isBaby() && this.getTarget() == null) {
             this.setTarget(this.getNearestPlayerToAttack());
         }
@@ -95,27 +108,36 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/ChickenEntity;dropItem(Lnet/minecraft/item/ItemConvertible;)Lnet/minecraft/entity/ItemEntity;"), method = "tickMovement")
     public ItemEntity customLayEgg(ChickenEntity instance, ItemConvertible itemConvertible) {
-        if (!isDiamondChicken()) return null;
-        if (random.nextFloat() < 0.05D) {
+        if (!CONFIG_COMMON.diamond_chickens.enabled || !isDiamondChicken()) return null;
+        if (CONFIG_COMMON.diamond_chickens.should_explode && random.nextFloat() < 0.05D) {
             this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 2.0F, false, World.ExplosionSourceType.MOB);
-        } else if (random.nextBoolean()) return this.dropItem(Items.DIAMOND);
-        else return this.dropItem(Items.LAPIS_LAZULI);
+        } else if (CONFIG_COMMON.diamond_chickens.special_drops && CONFIG_COMMON.diamond_chickens.special_drop_chance <= random.nextFloat()) {
+            if (random.nextBoolean()) {
+                return this.dropItem(Items.DIAMOND);
+            } else {
+                return this.dropItem(Items.LAPIS_LAZULI);
+            }
+        }
         return null;
     }
 
     @Override
     public boolean damage(DamageSource source, float amount) {
         if (!super.damage(source, amount)) return false;
+        if (!CONFIG_COMMON.neutral_chickens.enabled) return true;
+
         if (this.random.nextFloat() < 0.25f && source.getAttacker() instanceof ServerPlayerEntity player) {
             var chickens = this.getWorld().getEntitiesByClass(ChickenEntity.class, getBoundingBox().expand(10D, 10D, 10D), e -> e != (MobEntity) this);
             var size = chickens.size();
-            for (int i = MathHelper.nextInt(this.random, 1, 3); size < i; ++size) {
-                var chicken = new ChickenEntity(EntityType.CHICKEN, getWorld());
-                chicken.setPosition(this.getX(), this.getY() + 1.5D, this.getZ());
-                chicken.setYaw(this.getYaw());
-                chicken.setPitch(this.getPitch());
-                chicken.setTarget(player);
-                this.getWorld().spawnEntity(chicken);
+            if (CONFIG_COMMON.neutral_chickens.spawn_clones) {
+                for (int i = MathHelper.nextInt(this.random, 1, 3); size < i; ++size) {
+                    var chicken = new ChickenEntity(EntityType.CHICKEN, getWorld());
+                    chicken.setPosition(this.getX(), this.getY() + 1.5D, this.getZ());
+                    chicken.setYaw(this.getYaw());
+                    chicken.setPitch(this.getPitch());
+                    chicken.setTarget(player);
+                    this.getWorld().spawnEntity(chicken);
+                }
             }
         }
         return true;
@@ -154,12 +176,16 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        setDiamondChicken(nbt.getBoolean("DiamondChicken"));
+        if (CONFIG_COMMON.diamond_chickens.enabled) {
+            setDiamondChicken(nbt.getBoolean("DiamondChicken"));
+        }
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putBoolean("DiamondChicken", isDiamondChicken());
+        if (CONFIG_COMMON.diamond_chickens.enabled) {
+            nbt.putBoolean("DiamondChicken", isDiamondChicken());
+        }
     }
 }

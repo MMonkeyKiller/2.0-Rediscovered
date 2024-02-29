@@ -34,6 +34,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import org.jetbrains.annotations.Nullable;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 public class WitherHugEntity extends HostileEntity implements SkinOverlayOwner, RangedAttackMob {
 
     private static final TrackedData<Integer> INVUL_TIMER = DataTracker.registerData(WitherHugEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -77,6 +79,16 @@ public class WitherHugEntity extends HostileEntity implements SkinOverlayOwner, 
         super.readCustomDataFromNbt(nbt);
         this.setInvulTimer(nbt.getInt("Invul"));
         this.setHeads(nbt.getInt("Heads"));
+    }
+
+    @Override
+    public boolean shouldDropXp() {
+        return CONFIG_COMMON.pink_wither.allow_drops && super.shouldDropXp();
+    }
+
+    @Override
+    protected boolean shouldDropLoot() {
+        return CONFIG_COMMON.pink_wither.allow_drops && super.shouldDropLoot();
     }
 
     @Override

@@ -15,6 +15,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldEvents;
 import org.slf4j.Logger;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 public class FlopperBlock extends DispenserBlock {
     private static final DispenserBehavior FLOPPER_DISPENSER_BEHAVIOR = new FlopperItemDispenserBehavior();
 
@@ -36,6 +38,11 @@ public class FlopperBlock extends DispenserBlock {
 
     @Override
     protected void dispense(ServerWorld world, BlockState state, BlockPos pos) {
+        if (!CONFIG_COMMON.floppers.enabled) {
+            super.dispense(world, state, pos);
+            return;
+        }
+
         ItemStack itemStack2;
         DispenserBlockEntity dispenserBlockEntity = world.getBlockEntity(pos, V2_0_Rediscovered.FLOPPER_BLOCK_ENTITY).orElse(null);
         if (dispenserBlockEntity == null) {

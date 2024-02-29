@@ -5,7 +5,7 @@
 - [x] Horses and Ponies
 - [x] Redstone Bugs
 - [x] Diamond Chickens
-- [ ] Floppers
+- [x] Floppers
 - [x] Furnace Heat
 - [x] Neutral Chickens
 - [x] Mob Fatness
@@ -15,4 +15,4 @@
 - [x] Speech Bubbles
 - [x] Tinted Glass
 
-- [ ] Add remaining config
+- [x] Add remaining config

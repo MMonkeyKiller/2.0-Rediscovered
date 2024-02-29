@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Random;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(AbstractFurnaceBlockEntity.class)
 public abstract class AbstractFurnaceBlockEntityMixin {
     @Shadow
@@ -31,17 +33,25 @@ public abstract class AbstractFurnaceBlockEntityMixin {
 
     @Inject(at = @At("TAIL"), method = "readNbt")
     private void readHeatNBT(NbtCompound nbt, CallbackInfo ci) {
-        this.heat = nbt.getInt("Heat");
+        if (CONFIG_COMMON.furnace_heat.enabled) {
+            this.heat = nbt.getInt("Heat");
+        }
     }
 
     @Inject(at = @At("TAIL"), method = "writeNbt")
     private void writeHeatNBT(NbtCompound nbt, CallbackInfo ci) {
-        nbt.putInt("Heat", this.heat);
+        if (CONFIG_COMMON.furnace_heat.enabled) {
+            nbt.putInt("Heat", this.heat);
+        }
     }
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/AbstractFurnaceBlockEntity;isBurning()Z", ordinal = 1), method = "tick")
     private static boolean decreaseBurnTime(@NotNull AbstractFurnaceBlockEntity instance) {
         var blockEntity = (AbstractFurnaceBlockEntityMixin) (Object) instance;
+
+        if (!CONFIG_COMMON.furnace_heat.enabled) {
+            return blockEntity.isBurning();
+        }
 
         var random = new Random();
         if (blockEntity.isBurning()) {

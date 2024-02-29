@@ -11,10 +11,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(ZombifiedPiglinEntity.class)
 public class ZombifiedPiglinEntityMixin {
     @Inject(at = @At("HEAD"), method = "initEquipment", cancellable = true)
     public void initEquipment(CallbackInfo ci) {
+        if (!CONFIG_COMMON.pigman_battle_signs.enabled) return;
         var self = (ZombifiedPiglinEntity) (Object) this;
         ci.cancel();
 

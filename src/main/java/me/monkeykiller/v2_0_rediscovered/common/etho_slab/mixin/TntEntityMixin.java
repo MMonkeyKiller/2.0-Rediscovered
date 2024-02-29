@@ -13,6 +13,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
+
 @Mixin(TntEntity.class)
 public abstract class TntEntityMixin implements EthoEntityAccessor {
     @Unique
@@ -61,6 +63,9 @@ public abstract class TntEntityMixin implements EthoEntityAccessor {
                 var fallingBlock = FallingBlockEntityInvoker.newFallingBlockEntity(self.getWorld(),
                         closestPlayer.getX(), closestPlayer.getBoundingBox().maxY + 1.0D, closestPlayer.getZ(),
                         Blocks.ANVIL.getDefaultState());
+                if (!CONFIG_COMMON.etho_slab.should_place_anvil) {
+                    fallingBlock.setDestroyedOnLanding();
+                }
                 fallingBlock.setHurtEntities(40.0F, 40);
                 self.getWorld().spawnEntity(fallingBlock);
             }

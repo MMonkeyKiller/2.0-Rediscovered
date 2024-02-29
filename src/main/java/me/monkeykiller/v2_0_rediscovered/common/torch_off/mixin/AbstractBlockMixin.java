@@ -14,13 +14,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.TORCH_OFF_BLOCK;
-import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.WALL_TORCH_OFF_BLOCK;
+import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.*;
 
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {
     @Inject(at = @At("HEAD"), method = "randomTick")
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
+        if (!CONFIG_COMMON.burnt_out_torches.enabled) return;
         if (state.isOf(Blocks.TORCH) || state.isOf(Blocks.WALL_TORCH)) {
             if (state.isOf(Blocks.TORCH)) {
                 world.setBlockState(pos, TORCH_OFF_BLOCK.getStateWithProperties(state));
