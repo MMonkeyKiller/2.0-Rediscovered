@@ -40,8 +40,12 @@ public abstract class TntEntityMixin implements EthoEntityAccessor {
 
     @Override
     public EthoType getEthoType() {
-        var self = (TntEntity) (Object) this;
-        return EthoType.valueOf(self.getDataTracker().get(ETHO_TYPE));
+        try {
+            var self = (TntEntity) (Object) this;
+            return EthoType.valueOf(self.getDataTracker().get(ETHO_TYPE));
+        } catch (IllegalArgumentException e) {
+            return EthoType.NONE;
+        }
     }
 
     @Override

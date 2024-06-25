@@ -28,9 +28,10 @@ public abstract class LivingEntityRendererMixin {
     @ModifyArgs(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
     public void diamondChickenColor(Args args) {
         if (replace) {
-            args.set(5, 0.5f); // red
-            args.set(6, 0.5f); // green
-            args.set(7, 1f);   // blue
+            var i = args.size() - 4;
+            args.set(i++, 0.5f); // red
+            args.set(i++, 0.5f); // green
+            args.set(i++, 1f);   // blue
         }
     }
 }

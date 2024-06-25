@@ -34,11 +34,11 @@ public class LivingEntityRendererMixin {
             var blue = (float) (color & 255) / 255.0F;
             var alpha = (float) (color >> 24 & 255) / 255.0F;
 
-            var i = 4;
-            args.set(++i, red);
-            args.set(++i, green);
-            args.set(++i, blue);
-            args.set(++i, alpha);
+            var i = args.size() - 4;
+            args.set(i++, red);
+            args.set(i++, green);
+            args.set(i++, blue);
+            args.set(i++, alpha);
         }
     }
 }
