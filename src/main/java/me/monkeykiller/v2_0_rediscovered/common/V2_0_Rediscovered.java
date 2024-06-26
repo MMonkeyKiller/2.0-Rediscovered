@@ -18,15 +18,13 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.BlockItem;
@@ -36,6 +34,7 @@ import net.minecraft.item.VerticallyAttachableBlockItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.LogManager;
@@ -44,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class V2_0_Rediscovered implements ModInitializer {
     public static final String MOD_ID = "v2_0_rediscovered";
@@ -51,23 +51,17 @@ public class V2_0_Rediscovered implements ModInitializer {
 
     public static final ConfigCommon CONFIG_COMMON = ConfigCommon.getConfig();
 
-    public static final EntityType<SpeechBubbleEntity> SPEECH_BUBBLE = Registry.register(
-            Registries.ENTITY_TYPE, identifier("speech_bubble"),
-            FabricEntityTypeBuilder.<SpeechBubbleEntity>create(SpawnGroup.MISC, SpeechBubbleEntity::new)
-                    .dimensions(EntityDimensions.fixed(0.2f, 0.2f))
-                    .build());
+    public static final EntityType<SpeechBubbleEntity> SPEECH_BUBBLE = register("speech_bubble", EntityType.Builder
+            .<SpeechBubbleEntity>create(SpeechBubbleEntity::new, SpawnGroup.MISC)
+            .setDimensions(0.2f, 0.2f));
 
-    public static final EntityType<WitherHugEntity> WITHER_HUG = Registry.register(
-            Registries.ENTITY_TYPE, identifier("wither_hug"),
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, WitherHugEntity::new)
-                    .dimensions(EntityDimensions.fixed(0.9f, 3.5f))
-                    .build());
+    public static final EntityType<WitherHugEntity> WITHER_HUG = register("wither_hug", EntityType.Builder
+            .create(WitherHugEntity::new, SpawnGroup.CREATURE)
+            .setDimensions(0.9f, 3.5f));
 
-    public static final EntityType<WitherLoveEntity> WITHER_LOVE = Registry.register(
-            Registries.ENTITY_TYPE, identifier("wither_love"),
-            FabricEntityTypeBuilder.<WitherLoveEntity>create(SpawnGroup.MISC, WitherLoveEntity::new)
-                    .dimensions(EntityDimensions.fixed(0.3125F, 0.3125F))
-                    .build());
+    public static final EntityType<WitherLoveEntity> WITHER_LOVE = register("wither_love", EntityType.Builder
+            .<WitherLoveEntity>create(WitherLoveEntity::new, SpawnGroup.MISC)
+            .setDimensions(0.3125F, 0.3125F));
 
     public static final Block ETHO_SLAB_BLOCK = register("etho_slab", new EthoSlabBlock(Settings.copy(Blocks.TNT).strength(2.0F, 10.0F).sounds(BlockSoundGroup.GRASS)));
     public static final Item ETHO_SLAB_ITEM = register("etho_slab", new BlockItem(ETHO_SLAB_BLOCK, new FabricItemSettings()));
@@ -100,7 +94,7 @@ public class V2_0_Rediscovered implements ModInitializer {
 
     public static final BlockEntityType<FlopperBlockEntity> FLOPPER_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE, identifier("flopper_block_entity"),
-            FabricBlockEntityTypeBuilder.create(FlopperBlockEntity::new, FLOPPER_BLOCK).build()
+            BlockEntityType.Builder.create(FlopperBlockEntity::new, FLOPPER_BLOCK).build(null)
     );
 
     public static Identifier identifier(@NotNull String path) {
@@ -151,5 +145,10 @@ public class V2_0_Rediscovered implements ModInitializer {
 
     private static <T extends Item> T register(@NonNull String id, @NonNull T item) {
         return Registry.register(Registries.ITEM, identifier(id), item);
+    }
+
+    private static <T extends Entity> EntityType<T> register(@NonNull String id, @NonNull EntityType.Builder<T> builder) {
+        var identifier = identifier(id);
+        return Registry.register(Registries.ENTITY_TYPE, identifier, builder.build(identifier.toString()));
     }
 }

@@ -60,12 +60,11 @@ public class EthoSlabBlock extends SlabBlock {
         }
     }
 
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!world.isClient() && !player.isCreative() && state.get(UNSTABLE)) {
             primeTnt(world, pos);
         }
-
-        super.onBreak(world, pos, state, player);
+        return super.onBreak(world, pos, state, player);
     }
 
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {

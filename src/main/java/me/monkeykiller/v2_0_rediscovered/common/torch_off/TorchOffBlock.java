@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class TorchOffBlock extends TorchBlock implements AbstractTorchOff {
     public TorchOffBlock(Settings settings) {
-        super(settings, null);
+        super(null, settings);
     }
 
     @Override

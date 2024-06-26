@@ -53,6 +53,7 @@ public class SuperHostileModeInstance {
     }
 
     public void tick() {
+        if (!world.getTickManager().shouldTick()) return;
         if (nextWaveReset > 0L) {
             if (--nextWaveReset > 0) return;
             for (var entity : waveEntities)
