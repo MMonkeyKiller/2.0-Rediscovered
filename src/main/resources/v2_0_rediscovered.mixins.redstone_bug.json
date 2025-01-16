@@ -7,7 +7,9 @@
   "mixins": [
     "MobEntityMixin",
     "RedstoneWireBlockMixin",
-    "SilverfishEntityMixin"
+    "SilverfishEntityMixin",
+    "WanderAndInfestGoalMixin",
+    "WanderAroundGoalAccesor"
   ],
   "client": [
   ],
