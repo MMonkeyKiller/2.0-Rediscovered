@@ -37,6 +37,7 @@ import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_
 @Mixin(ChickenEntity.class)
 public abstract class ChickenEntityMixin extends MobEntity implements DiamondChickenAccessor {
     @Unique
+    @SuppressWarnings("WrongEntityDataParameterClass")
     private static final TrackedData<Boolean> DIAMOND_CHICKEN = DataTracker.registerData(ChickenEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     @Unique
@@ -143,6 +144,7 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
         return true;
     }
 
+    @Unique
     protected PlayerEntity getNearestPlayerToAttack() {
         var player = this.getWorld().getClosestPlayer(this, 64.0D);
         if (player == null) return null;
@@ -159,6 +161,7 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
         return null;
     }
 
+    @Unique
     private boolean isPlayerStaring(PlayerEntity player) {
         var helmet = player.getEquippedStack(EquipmentSlot.HEAD);
 
