@@ -106,17 +106,19 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/ChickenEntity;dropItem(Lnet/minecraft/item/ItemConvertible;)Lnet/minecraft/entity/ItemEntity;"), method = "tickMovement")
     public ItemEntity customLayEgg(ChickenEntity instance, ItemConvertible itemConvertible) {
-        if (!CONFIG_COMMON.diamond_chickens.enabled || !isDiamondChicken()) return null;
-        if (CONFIG_COMMON.diamond_chickens.should_explode && random.nextFloat() < 0.05D) {
-            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 2.0F, false, World.ExplosionSourceType.MOB);
-        } else if (CONFIG_COMMON.diamond_chickens.special_drops && CONFIG_COMMON.diamond_chickens.special_drop_chance <= random.nextFloat()) {
-            if (random.nextBoolean()) {
-                return this.dropItem(Items.DIAMOND);
-            } else {
-                return this.dropItem(Items.LAPIS_LAZULI);
+        if (CONFIG_COMMON.diamond_chickens.enabled && isDiamondChicken()) {
+            if (CONFIG_COMMON.diamond_chickens.should_explode && random.nextFloat() < 0.05D) {
+                this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 2.0F, false, World.ExplosionSourceType.MOB);
+                return null;
+            } else if (CONFIG_COMMON.diamond_chickens.special_drops && random.nextFloat() <= CONFIG_COMMON.diamond_chickens.special_drop_chance) {
+                if (random.nextBoolean()) {
+                    return this.dropItem(Items.DIAMOND);
+                } else {
+                    return this.dropItem(Items.LAPIS_LAZULI);
+                }
             }
         }
-        return null;
+        return this.dropItem(itemConvertible);
     }
 
     @Override
