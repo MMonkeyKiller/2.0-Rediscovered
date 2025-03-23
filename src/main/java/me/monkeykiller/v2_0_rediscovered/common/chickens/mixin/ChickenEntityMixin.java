@@ -92,10 +92,8 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
 
     @Redirect(method = "initGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/goal/GoalSelector;add(ILnet/minecraft/entity/ai/goal/Goal;)V"))
     public void add(GoalSelector instance, int priority, Goal goal) {
-        if (!CONFIG_COMMON.neutral_chickens.enabled || instance == null) return;
-        if (!(goal instanceof EscapeDangerGoal)) {
-            instance.add(priority, goal);
-        }
+      if (goal instanceof EscapeDangerGoal && CONFIG_COMMON.neutral_chickens.enabled) return;
+      instance.add(priority, goal);
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AnimalEntity;tickMovement()V", shift = At.Shift.AFTER), method = "tickMovement")
