@@ -48,15 +48,15 @@ public abstract class ChickenEntityMixin extends MobEntity implements DiamondChi
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        getDataTracker().startTracking(DIAMOND_CHICKEN, false);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(DIAMOND_CHICKEN, false);
     }
 
     @Nullable
     @Override
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
-        var data = super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
+        var data = super.initialize(world, difficulty, spawnReason, entityData);
         if (CONFIG_COMMON.diamond_chickens.enabled) {
             if (this.random.nextFloat() < CONFIG_COMMON.diamond_chickens.spawn_probability) {
                 this.setDiamondChicken(true);

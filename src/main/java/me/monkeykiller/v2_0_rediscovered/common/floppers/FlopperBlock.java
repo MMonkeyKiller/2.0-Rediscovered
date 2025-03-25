@@ -5,13 +5,16 @@ import me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
-import net.minecraft.block.entity.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.DispenserBlockEntity;
+import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import org.slf4j.Logger;
 
@@ -27,7 +30,7 @@ public class FlopperBlock extends DispenserBlock {
     }
 
     @Override
-    protected DispenserBehavior getBehaviorForItem(ItemStack stack) {
+    protected DispenserBehavior getBehaviorForItem(World world, ItemStack stack) {
         return FLOPPER_DISPENSER_BEHAVIOR;
     }
 

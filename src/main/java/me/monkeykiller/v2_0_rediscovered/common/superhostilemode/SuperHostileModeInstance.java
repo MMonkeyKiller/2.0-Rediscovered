@@ -9,7 +9,6 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
@@ -94,7 +93,7 @@ public class SuperHostileModeInstance {
                     spawnedEntity = clazz.getConstructor(EntityType.class, World.class).newInstance(entityType, world);
                     spawnedEntity.setPosition(rngX, randomPlayer.getY(), rngZ);
                     spawnedEntity.setTarget(randomPlayer);
-                    spawnedEntity.initialize(world, world.getLocalDifficulty(spawnedEntity.getBlockPos()), SpawnReason.NATURAL, null, spawnedEntity.writeNbt(new NbtCompound()));
+                    spawnedEntity.initialize(world, world.getLocalDifficulty(spawnedEntity.getBlockPos()), SpawnReason.NATURAL, null);
                     if (spawnedEntity instanceof CreeperEntity creeper && CONFIG_COMMON.super_hostile_mode.spawn_fake_lightning)
                         creeper.onStruckByLightning(world, lightning);
                 } catch (Exception e) {

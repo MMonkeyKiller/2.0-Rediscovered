@@ -17,7 +17,6 @@
   ],
   "result": {
     "count": 8,
-    "item": "v2_0_rediscovered:blue_tinted_glass"
-  },
-  "show_notification": true
+    "id": "v2_0_rediscovered:blue_tinted_glass"
+  }
 }

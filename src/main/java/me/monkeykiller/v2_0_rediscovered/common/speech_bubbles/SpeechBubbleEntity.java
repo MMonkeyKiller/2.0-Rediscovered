@@ -36,8 +36,8 @@ public class SpeechBubbleEntity extends Entity {
     }
 
     @Override
-    protected void initDataTracker() {
-        this.dataTracker.startTracking(BUBBLE_TEXT, "");
+    protected void initDataTracker(DataTracker.Builder builder) {
+        builder.add(BUBBLE_TEXT, "");
     }
 
     public void setBubbleText(@NotNull String value) {

@@ -3,6 +3,7 @@ package me.monkeykiller.v2_0_rediscovered.common.torch_off;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TorchBlock;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -37,9 +38,7 @@ public interface AbstractTorchOff {
         if (player instanceof ServerPlayerEntity) {
             if (!player.isCreative()) {
                 if (itemStack.isOf(Items.FLINT_AND_STEEL)) {
-                    itemStack.damage(1, player, (p) -> {
-                        p.sendToolBreakStatus(hand);
-                    });
+                    itemStack.damage(1, player, LivingEntity.getSlotForHand(hand));
                 } else {
                     itemStack.decrement(1);
                 }

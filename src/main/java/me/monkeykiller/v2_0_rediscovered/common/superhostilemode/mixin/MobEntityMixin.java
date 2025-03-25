@@ -41,7 +41,7 @@ public class MobEntityMixin {
                 var wools = Registries.BLOCK.stream().filter(b -> b.getRegistryEntry().isIn(BlockTags.WOOL)).toList();
                 stack = new ItemStack(wools.get(self.getRandom().nextInt(wools.size())));
             }
-            EnchantmentHelper.enchant(self.getRandom(), stack, 30, false);
+            EnchantmentHelper.enchant(serverWorld.getEnabledFeatures(), self.getRandom(), stack, 30, false);
             self.equipStack(slot, stack);
         }
 
@@ -53,7 +53,7 @@ public class MobEntityMixin {
         } else {
             stack = new ItemStack(Items.DIAMOND_SWORD);
         }
-        EnchantmentHelper.enchant(self.getRandom(), stack, 30, false);
+        EnchantmentHelper.enchant(serverWorld.getEnabledFeatures(), self.getRandom(), stack, 30, false);
         self.equipStack(EquipmentSlot.MAINHAND, stack);
     }
 }

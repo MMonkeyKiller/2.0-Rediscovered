@@ -5,7 +5,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.tag.ItemTags;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,16 +20,7 @@ public class ZombifiedPiglinEntityMixin {
         var self = (ZombifiedPiglinEntity) (Object) this;
         ci.cancel();
 
-        self.equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.OAK_SIGN));
-        var mainHand = self.getMainHandStack();
-
-        if (!mainHand.isEmpty() && mainHand.isIn(ItemTags.SIGNS)) {
-            var temporalSword = new ItemStack(Items.GOLDEN_SWORD);
-            temporalSword.setNbt(mainHand.getOrCreateNbt());
-            temporalSword = EnchantmentHelper.enchant(self.getRandom(), temporalSword, 30, false);
-
-            mainHand.setNbt(temporalSword.getOrCreateNbt());
-            self.equipStack(EquipmentSlot.MAINHAND, mainHand);
-        }
+        var temporalSword = EnchantmentHelper.enchant(self.getWorld().getEnabledFeatures(), self.getRandom(), new ItemStack(Items.GOLDEN_SWORD), 30, false);
+        self.equipStack(EquipmentSlot.MAINHAND, temporalSword.copyComponentsToNewStack(Items.OAK_SIGN, 1));
     }
 }

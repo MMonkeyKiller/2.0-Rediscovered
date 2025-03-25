@@ -31,11 +31,8 @@ public class MobEntityMixin implements FatEntityAccessor {
     private static final TrackedData<Byte> FATNESS = DataTracker.registerData(MobEntity.class, TrackedDataHandlerRegistry.BYTE);
 
     @Inject(at = @At("TAIL"), method = "initDataTracker")
-    protected void injectDataTracker(CallbackInfo ci) {
-        var self = (MobEntity) (Object) this;
-        if (isFattenable()) {
-            self.getDataTracker().startTracking(FATNESS, (byte) 0);
-        }
+    protected void injectDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
+        builder.add(FATNESS, (byte) 0);
     }
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
@@ -72,7 +69,7 @@ public class MobEntityMixin implements FatEntityAccessor {
                 int var4 = self.getRandom().nextInt(newFatness * 2);
 
                 for (int i = 0; i < var4; ++i) {
-                    var lootTable = serverWorld.getServer().getLootManager().getLootTable(self.getLootTable());
+                    var lootTable = serverWorld.getServer().getReloadableRegistries().getLootTable(self.getLootTable());
                     var builder = new LootContextParameterSet.Builder(serverWorld)
                             // .random(self.getRandom().nextLong())
                             .add(LootContextParameters.THIS_ENTITY, self)

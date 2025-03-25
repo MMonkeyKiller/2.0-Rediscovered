@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:tnt"
-            ]
+            "items": "minecraft:tnt"
           }
         ]
       },
@@ -30,6 +28,5 @@
     "recipes": [
       "v2_0_rediscovered:etho_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

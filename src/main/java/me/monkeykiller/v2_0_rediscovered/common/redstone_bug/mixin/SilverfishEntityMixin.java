@@ -21,8 +21,8 @@ public class SilverfishEntityMixin extends MobEntity implements RedstoneBugAcces
     }
 
     @Override
-    public void setupDataTracker() {
-        getDataTracker().startTracking(COLOR, 0);
+    public void setupDataTracker(DataTracker.Builder builder) {
+        builder.add(COLOR, 0);
     }
 
     @Override

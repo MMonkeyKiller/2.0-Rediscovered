@@ -11,12 +11,15 @@ import net.minecraft.loot.condition.SurvivesExplosionLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.predicate.StatePredicate;
+import net.minecraft.registry.RegistryWrapper;
+
+import java.util.concurrent.CompletableFuture;
 
 import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.*;
 
 public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
-    public ModBlockLootTableProvider(FabricDataOutput dataOutput) {
-        super(dataOutput);
+    public ModBlockLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        super(dataOutput, registryLookup);
     }
 
     @Override

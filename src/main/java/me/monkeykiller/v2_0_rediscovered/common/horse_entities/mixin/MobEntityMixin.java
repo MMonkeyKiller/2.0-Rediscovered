@@ -3,6 +3,7 @@ package me.monkeykiller.v2_0_rediscovered.common.horse_entities.mixin;
 import me.monkeykiller.v2_0_rediscovered.common.horse_entities.HorseEntityAccessor;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.PigEntity;
@@ -20,15 +21,15 @@ import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin implements HorseEntityAccessor {
     @Inject(at = @At("TAIL"), method = "initDataTracker")
-    protected void injectDataTracker(CallbackInfo ci) {
+    protected void injectDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
         var self = (MobEntity) (Object) this;
         if (self instanceof CowEntity || self instanceof PigEntity) {
-            setupDataTracker();
+            setupDataTracker(builder);
         }
     }
 
     @Inject(at = @At("TAIL"), method = "initialize")
-    public void initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir) {
+    public void initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, CallbackInfoReturnable<EntityData> cir) {
         if (!CONFIG_COMMON.horses_and_ponies.enabled) return;
         var self = (MobEntity) (Object) this;
         if (self instanceof CowEntity || self instanceof PigEntity) {

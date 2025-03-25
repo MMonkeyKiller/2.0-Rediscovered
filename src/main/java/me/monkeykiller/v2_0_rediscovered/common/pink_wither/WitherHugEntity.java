@@ -16,13 +16,16 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.WindChargeEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -61,10 +64,10 @@ public class WitherHugEntity extends HostileEntity implements SkinOverlayOwner, 
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(INVUL_TIMER, 0);
-        this.dataTracker.startTracking(HEADS, 0);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(INVUL_TIMER, 0);
+        builder.add(HEADS, 0);
     }
 
     @Override
@@ -127,14 +130,14 @@ public class WitherHugEntity extends HostileEntity implements SkinOverlayOwner, 
                         headZ + this.random.nextGaussian() * 0.30000001192092896D,
                         0.0D, 0.0D, 0.0D);
                 if (renderOverlay && this.getWorld().random.nextInt(4) == 0) {
-                    this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, headX + this.random.nextGaussian() * (double) 0.3f, headY + this.random.nextGaussian() * (double) 0.3f, headZ + this.random.nextGaussian() * (double) 0.3f, 0.7f, 0.7f, 0.5);
+                    this.getWorld().addParticle(EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, 0.7f, 0.7f, 0.5f), headX + this.random.nextGaussian() * (double) 0.3f, headY + this.random.nextGaussian() * (double) 0.3f, headZ + this.random.nextGaussian() * (double) 0.3f, 0.7f, 0.7f, 0.5);
                 }
             }
         }
 
         if (this.getInvulnerableTimer() > 0) {
             for (int i = 0; i < 3; i++) {
-                this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + this.random.nextGaussian(), this.getY() + (double) (this.random.nextFloat() * 3.3f), this.getZ() + this.random.nextGaussian(), 0.7f, 0.7f, 0.9f);
+                this.getWorld().addParticle(EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, 0.7f, 0.7f, 0.9f), this.getX() + this.random.nextGaussian(), this.getY() + (double) (this.random.nextFloat() * 3.3f), this.getZ() + this.random.nextGaussian(), 0.7f, 0.7f, 0.9f);
             }
         }
     }
@@ -227,11 +230,11 @@ public class WitherHugEntity extends HostileEntity implements SkinOverlayOwner, 
         if (this.getInvulnerableTimer() > 0 && !source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;
         }
-        if (this.shouldRenderOverlay() && source.getSource() instanceof PersistentProjectileEntity) {
+        if (this.shouldRenderOverlay() && ((entity = source.getSource()) instanceof PersistentProjectileEntity || entity instanceof WindChargeEntity)) {
             return false;
         }
         entity = source.getAttacker();
-        if (!(entity instanceof PlayerEntity) && entity instanceof LivingEntity && ((LivingEntity) entity).getGroup() == this.getGroup()) {
+        if (entity != null && entity.getType().isIn(EntityTypeTags.WITHER_FRIENDS)) {
             return false;
         }
 
@@ -280,11 +283,6 @@ public class WitherHugEntity extends HostileEntity implements SkinOverlayOwner, 
     @Override
     public boolean shouldRenderOverlay() {
         return this.getHealth() <= this.getMaxHealth() / 2.0f;
-    }
-
-    @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
     }
 
     @Override

@@ -13,5 +13,6 @@ public class V2_0_RediscoveredDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(ModRecipeProvider::new);
         pack.addProvider(ModBlockLootTableProvider::new);
         pack.addProvider(ModTagProvider::new);
+        pack.addProvider(ModEntityTagProvider::new);
     }
 }

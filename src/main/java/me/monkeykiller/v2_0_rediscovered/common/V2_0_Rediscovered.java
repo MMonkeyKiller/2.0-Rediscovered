@@ -15,10 +15,9 @@ import me.monkeykiller.v2_0_rediscovered.common.torch_off.TorchOffBlock;
 import me.monkeykiller.v2_0_rediscovered.common.torch_off.WallTorchOffBlock;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -34,7 +33,6 @@ import net.minecraft.item.VerticallyAttachableBlockItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +41,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class V2_0_Rediscovered implements ModInitializer {
     public static final String MOD_ID = "v2_0_rediscovered";
@@ -53,25 +50,25 @@ public class V2_0_Rediscovered implements ModInitializer {
 
     public static final EntityType<SpeechBubbleEntity> SPEECH_BUBBLE = register("speech_bubble", EntityType.Builder
             .<SpeechBubbleEntity>create(SpeechBubbleEntity::new, SpawnGroup.MISC)
-            .setDimensions(0.2f, 0.2f));
+            .dimensions(0.2f, 0.2f));
 
     public static final EntityType<WitherHugEntity> WITHER_HUG = register("wither_hug", EntityType.Builder
             .create(WitherHugEntity::new, SpawnGroup.CREATURE)
-            .setDimensions(0.9f, 3.5f));
+            .dimensions(0.9f, 3.5f));
 
     public static final EntityType<WitherLoveEntity> WITHER_LOVE = register("wither_love", EntityType.Builder
             .<WitherLoveEntity>create(WitherLoveEntity::new, SpawnGroup.MISC)
-            .setDimensions(0.3125F, 0.3125F));
+            .dimensions(0.3125F, 0.3125F));
 
     public static final Block ETHO_SLAB_BLOCK = register("etho_slab", new EthoSlabBlock(Settings.copy(Blocks.TNT).strength(2.0F, 10.0F).sounds(BlockSoundGroup.GRASS)));
-    public static final Item ETHO_SLAB_ITEM = register("etho_slab", new BlockItem(ETHO_SLAB_BLOCK, new FabricItemSettings()));
+    public static final Item ETHO_SLAB_ITEM = register("etho_slab", new BlockItem(ETHO_SLAB_BLOCK, new Item.Settings()));
 
     public static final Block TORCH_OFF_BLOCK = register("torch_off", new TorchOffBlock(Settings.copy(Blocks.TORCH).luminance(state -> 0)));
     public static final Block WALL_TORCH_OFF_BLOCK = register("wall_torch_off", new WallTorchOffBlock(Settings.copy(Blocks.WALL_TORCH).dropsLike(TORCH_OFF_BLOCK).luminance(state -> 0)));
-    public static final Item TORCH_OFF_ITEM = register("torch_off", new VerticallyAttachableBlockItem(TORCH_OFF_BLOCK, WALL_TORCH_OFF_BLOCK, new FabricItemSettings(), Direction.DOWN));
+    public static final Item TORCH_OFF_ITEM = register("torch_off", new VerticallyAttachableBlockItem(TORCH_OFF_BLOCK, WALL_TORCH_OFF_BLOCK, new Item.Settings(), Direction.DOWN));
 
     public static final Block FLOPPER_BLOCK = register("flopper", new FlopperBlock(Settings.copy(Blocks.DROPPER)));
-    public static final Item FLOPPER_ITEM = register("flopper", new BlockItem(FLOPPER_BLOCK, new FabricItemSettings()));
+    public static final Item FLOPPER_ITEM = register("flopper", new BlockItem(FLOPPER_BLOCK, new Item.Settings()));
 
     public static final Map<Identifier, BlockItem> TINTED_GLASS_ITEMS = new HashMap<>();
 
@@ -133,13 +130,9 @@ public class V2_0_Rediscovered implements ModInitializer {
     }
 
     private static Block registerTintedGlass(@NonNull String id, int color, @NonNull MapColor mapColor) {
-        var settings = FabricBlockSettings.copy(Blocks.GLASS)
-                .mapColor(mapColor).nonOpaque()
-                .allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-                .suffocates(Blocks::never)
-                .blockVision(Blocks::never);
+        var settings = AbstractBlock.Settings.copyShallow(Blocks.TINTED_GLASS).mapColor(mapColor);
         var block = register(id, new ColoredTintedGlassBlock(settings, color));
-        TINTED_GLASS_ITEMS.put(identifier(id), register(id, new BlockItem(block, new FabricItemSettings())));
+        TINTED_GLASS_ITEMS.put(identifier(id), register(id, new BlockItem(block, new Item.Settings())));
         return block;
     }
 

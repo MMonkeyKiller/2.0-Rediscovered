@@ -1,6 +1,7 @@
 package me.monkeykiller.v2_0_rediscovered.common.redstone_bug.mixin;
 
 import me.monkeykiller.v2_0_rediscovered.common.redstone_bug.RedstoneBugAccessor;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SilverfishEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -14,10 +15,10 @@ import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin implements RedstoneBugAccessor {
     @Inject(at = @At("TAIL"), method = "initDataTracker")
-    protected void injectDataTracker(CallbackInfo ci) {
+    protected void injectDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
         var self = (MobEntity) (Object) this;
         if (self instanceof SilverfishEntity) {
-            setupDataTracker();
+            setupDataTracker(builder);
         }
     }
 

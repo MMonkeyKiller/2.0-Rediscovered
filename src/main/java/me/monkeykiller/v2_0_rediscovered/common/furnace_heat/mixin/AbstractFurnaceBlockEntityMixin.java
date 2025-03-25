@@ -3,6 +3,7 @@ package me.monkeykiller.v2_0_rediscovered.common.furnace_heat.mixin;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -32,14 +33,14 @@ public abstract class AbstractFurnaceBlockEntityMixin {
     private int heat;
 
     @Inject(at = @At("TAIL"), method = "readNbt")
-    private void readHeatNBT(NbtCompound nbt, CallbackInfo ci) {
+    private void readHeatNBT(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup, CallbackInfo ci) {
         if (CONFIG_COMMON.furnace_heat.enabled) {
             this.heat = nbt.getInt("Heat");
         }
     }
 
     @Inject(at = @At("TAIL"), method = "writeNbt")
-    private void writeHeatNBT(NbtCompound nbt, CallbackInfo ci) {
+    private void writeHeatNBT(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup, CallbackInfo ci) {
         if (CONFIG_COMMON.furnace_heat.enabled) {
             nbt.putInt("Heat", this.heat);
         }

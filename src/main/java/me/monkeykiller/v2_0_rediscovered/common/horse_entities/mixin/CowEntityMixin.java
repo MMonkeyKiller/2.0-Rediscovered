@@ -26,9 +26,8 @@ public abstract class CowEntityMixin extends MobEntity implements HorseEntityAcc
     }
 
     @Override
-    public void setupDataTracker() {
-        var self = (CowEntity) (Object) this;
-        self.getDataTracker().startTracking(IS_HORSE, false);
+    public void setupDataTracker(DataTracker.Builder builder) {
+        builder.add(IS_HORSE, false);
     }
 
     public void setupHorse() {

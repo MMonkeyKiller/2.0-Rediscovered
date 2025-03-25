@@ -20,8 +20,8 @@ import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -44,7 +44,8 @@ public class EthoSlabBlock extends SlabBlock {
         return EthoType.SINGLE_ETHO;
     }
 
-    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+    @Override
+    protected void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         if (!oldState.isOf(state.getBlock())) {
             if (world.isReceivingRedstonePower(pos)) {
                 primeTnt(world, pos);
@@ -53,13 +54,15 @@ public class EthoSlabBlock extends SlabBlock {
         }
     }
 
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    @Override
+    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (world.isReceivingRedstonePower(pos)) {
             primeTnt(world, pos);
             world.removeBlock(pos, false);
         }
     }
 
+    @Override
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!world.isClient() && !player.isCreative() && state.get(UNSTABLE)) {
             primeTnt(world, pos);
@@ -67,6 +70,7 @@ public class EthoSlabBlock extends SlabBlock {
         return super.onBreak(world, pos, state, player);
     }
 
+    @Override
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
             TntEntity tntEntity = new TntEntity(world, pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d, explosion.getCausingEntity());
@@ -91,30 +95,27 @@ public class EthoSlabBlock extends SlabBlock {
         }
     }
 
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack itemStack = player.getStackInHand(hand);
+    @Override
+    public ItemActionResult onUseWithItem(ItemStack itemStack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!itemStack.isOf(Items.FLINT_AND_STEEL) && !itemStack.isOf(Items.FIRE_CHARGE)) {
-            return super.onUse(state, world, pos, player, hand, hit);
-        } else {
-            primeTnt(world, pos, player);
-            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
-            Item item = itemStack.getItem();
-            if (!player.isCreative()) {
-                if (itemStack.isOf(Items.FLINT_AND_STEEL)) {
-                    itemStack.damage(1, player, (playerx) -> {
-                        playerx.sendToolBreakStatus(hand);
-                    });
-                } else {
-                    itemStack.decrement(1);
-                }
-            }
-
-            player.incrementStat(Stats.USED.getOrCreateStat(item));
-            return ActionResult.success(world.isClient);
+            return super.onUseWithItem(itemStack, state, world, pos, player, hand, hit);
         }
+        primeTnt(world, pos, player);
+        world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
+        Item item = itemStack.getItem();
+        if (!player.isCreative()) {
+            if (itemStack.isOf(Items.FLINT_AND_STEEL)) {
+                itemStack.damage(1, player, LivingEntity.getSlotForHand(hand));
+            } else {
+                itemStack.decrement(1);
+            }
+        }
+        player.incrementStat(Stats.USED.getOrCreateStat(item));
+        return ItemActionResult.success(world.isClient);
     }
 
-    public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
+    @Override
+    protected void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
         if (!world.isClient) {
             BlockPos blockPos = hit.getBlockPos();
             Entity entity = projectile.getOwner();
@@ -126,6 +127,7 @@ public class EthoSlabBlock extends SlabBlock {
 
     }
 
+    @Override
     public boolean shouldDropItemsOnExplosion(Explosion explosion) {
         return false;
     }

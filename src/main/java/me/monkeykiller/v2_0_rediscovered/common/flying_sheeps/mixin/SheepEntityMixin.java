@@ -26,9 +26,8 @@ public abstract class SheepEntityMixin {
     private static final TrackedData<Boolean> FLOATING = DataTracker.registerData(SheepEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     @Inject(at = @At("TAIL"), method = "initDataTracker")
-    protected void injectDataTracker(CallbackInfo ci) {
-        var self = (SheepEntity) (Object) this;
-        self.getDataTracker().startTracking(FLOATING, false);
+    protected void injectDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
+        builder.add(FLOATING, false);
     }
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")

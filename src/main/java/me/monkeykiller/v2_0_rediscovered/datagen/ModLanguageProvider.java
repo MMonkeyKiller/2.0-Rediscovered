@@ -2,16 +2,19 @@ package me.monkeykiller.v2_0_rediscovered.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.registry.RegistryWrapper;
+
+import java.util.concurrent.CompletableFuture;
 
 import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.*;
 
 public class ModLanguageProvider extends FabricLanguageProvider {
-    protected ModLanguageProvider(FabricDataOutput dataOutput) {
-        super(dataOutput, "en_us");
+    protected ModLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        super(dataOutput, "en_us", registryLookup);
     }
 
     @Override
-    public void generateTranslations(TranslationBuilder translationBuilder) {
+    public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
         translationBuilder.add("container.flopper", "Flopper");
 
         translationBuilder.add(ETHO_SLAB_BLOCK, "Etho Slab");

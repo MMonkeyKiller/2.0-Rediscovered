@@ -21,9 +21,8 @@ public abstract class TntEntityMixin implements EthoEntityAccessor {
     private static final TrackedData<String> ETHO_TYPE = DataTracker.registerData(TntEntity.class, TrackedDataHandlerRegistry.STRING);
 
     @Inject(at = @At("TAIL"), method = "initDataTracker")
-    protected void injectDataTracker(CallbackInfo ci) {
-        var self = (TntEntity) (Object) this;
-        self.getDataTracker().startTracking(ETHO_TYPE, EthoType.NONE.toString());
+    protected void injectDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
+        builder.add(ETHO_TYPE, EthoType.NONE.toString());
     }
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")

@@ -9,7 +9,6 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class SpeechBubblesRenderer extends EntityRenderer<SpeechBubbleEntity> {
@@ -25,7 +24,6 @@ public class SpeechBubblesRenderer extends EntityRenderer<SpeechBubbleEntity> {
         var text = entity.getBubbleText();
 
         var positionMatrix = matrices.peek().getPositionMatrix();
-        var normalMatrix = matrices.peek().getNormalMatrix();
 
         var buffer = vertexConsumers.getBuffer(RenderLayer.getTextBackground());
 
@@ -35,10 +33,10 @@ public class SpeechBubblesRenderer extends EntityRenderer<SpeechBubbleEntity> {
         matrices.scale(-scaleFactor, -scaleFactor, scaleFactor);
 
         light = 255;
-        vertex(positionMatrix, normalMatrix, buffer, 0, 10, 0.01f, 0, 0, 0, 0, 0, light); // top left
-        vertex(positionMatrix, normalMatrix, buffer, -4, 14, 0.01f, 0, 0, 0, 0, 0, light); // bottom left
-        vertex(positionMatrix, normalMatrix, buffer, -4, 14, 0.01f, 0, 0, 0, 0, 0, light); // bottom right
-        vertex(positionMatrix, normalMatrix, buffer, 4, 10, 0.01f, 0, 0, 0, 0, 0, light); // top right
+        vertex(positionMatrix, buffer, 0, 10, 0.01f, 0, 0, light); // top left
+        vertex(positionMatrix, buffer, -4, 14, 0.01f, 0, 0, light); // bottom left
+        vertex(positionMatrix, buffer, -4, 14, 0.01f, 0, 0, light); // bottom right
+        vertex(positionMatrix, buffer, 4, 10, 0.01f, 0, 0, light); // top right
 
         textRenderer.draw(text, 0, 1, 0x000000, false, positionMatrix, vertexConsumers, TextRenderer.TextLayerType.NORMAL, 0xFFFFFFFF, light);
         matrices.pop();
@@ -49,7 +47,7 @@ public class SpeechBubblesRenderer extends EntityRenderer<SpeechBubbleEntity> {
         return null;
     }
 
-    public void vertex(Matrix4f positionMatrix, Matrix3f normalMatrix, VertexConsumer vertexConsumer, float x, float y, float z, float u, float v, int normalX, int normalZ, int normalY, int light) {
-        vertexConsumer.vertex(positionMatrix, x, y, z).color(255, 255, 255, 255).texture(u, v).light(light).normal(normalMatrix, (float) normalX, (float) normalY, (float) normalZ).next();
+    public void vertex(Matrix4f positionMatrix, VertexConsumer vertexConsumer, float x, float y, float z, float u, float v, int light) {
+        vertexConsumer.vertex(positionMatrix, x, y, z).color(255, 255, 255, 255).texture(u, v).light(light).next();
     }
 }
