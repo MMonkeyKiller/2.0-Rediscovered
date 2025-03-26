@@ -8,6 +8,7 @@ import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 
@@ -16,8 +17,8 @@ public class WitherLoveEntity extends ExplosiveProjectileEntity {
         super(entityType, world);
     }
 
-    public WitherLoveEntity(World world, WitherHugEntity witherHugEntity, double g, double h, double i) {
-        super(V2_0_Rediscovered.WITHER_LOVE, witherHugEntity, g, h, i, world);
+    public WitherLoveEntity(World world, WitherHugEntity witherHugEntity, Vec3d velocity) {
+        super(V2_0_Rediscovered.WITHER_LOVE, witherHugEntity, velocity, world);
     }
 
     @Override

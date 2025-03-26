@@ -9,6 +9,7 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.RotationAxis;
 import org.joml.Matrix4f;
 
 public class SpeechBubblesRenderer extends EntityRenderer<SpeechBubbleEntity> {
@@ -29,6 +30,7 @@ public class SpeechBubblesRenderer extends EntityRenderer<SpeechBubbleEntity> {
 
         matrices.translate(0, .6 + entity.getHeight(), 0);
         matrices.multiply(this.dispatcher.getRotation(), 0, -(entity.getHeight()), 0);
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180.0F));
         matrices.translate(-0.3f, 0, -0.25f);
         matrices.scale(-scaleFactor, -scaleFactor, scaleFactor);
 
@@ -48,6 +50,6 @@ public class SpeechBubblesRenderer extends EntityRenderer<SpeechBubbleEntity> {
     }
 
     public void vertex(Matrix4f positionMatrix, VertexConsumer vertexConsumer, float x, float y, float z, float u, float v, int light) {
-        vertexConsumer.vertex(positionMatrix, x, y, z).color(255, 255, 255, 255).texture(u, v).light(light).next();
+        vertexConsumer.vertex(positionMatrix, x, y, z).color(255, 255, 255, 255).texture(u, v).light(light);
     }
 }

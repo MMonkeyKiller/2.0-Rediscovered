@@ -17,16 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(FeatureRenderer.class)
 public abstract class FeatureRendererMixin {
     @Inject(at = @At("HEAD"), method = "renderModel", cancellable = true)
-    private static <T extends LivingEntity> void renderModel(EntityModel<T> model, Identifier texture, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T entity, float red, float green, float blue, CallbackInfo ci) {
+    private static <T extends LivingEntity> void renderModel(EntityModel<T> model, Identifier texture, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T entity, int color, CallbackInfo ci) {
         ci.cancel();
         var vertices = vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(texture));
         var overlay = LivingEntityRenderer.getOverlay(entity, 0.0f);
-        var alpha = 1.0f;
 
         if (model instanceof AnimalModelAccessor animalModel) {
-            animalModel.render(entity, matrices, vertices, light, overlay, red, green, blue, alpha);
+            animalModel.render(entity, matrices, vertices, light, overlay, color);
             return;
         }
-        model.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+        model.render(matrices, vertices, light, overlay, color);
     }
 }

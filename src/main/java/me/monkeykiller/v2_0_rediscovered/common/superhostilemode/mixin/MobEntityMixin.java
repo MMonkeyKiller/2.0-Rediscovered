@@ -18,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 @Mixin(MobEntity.class)
 public class MobEntityMixin {
     @Inject(at = @At(value = "HEAD"), method = "initEquipment", cancellable = true)
@@ -34,14 +36,14 @@ public class MobEntityMixin {
 
         int armorLevel = MathHelper.nextBetween(self.getRandom(), 2, 4);
         for (var slot : EquipmentSlot.values()) {
-            if (slot.getType() != EquipmentSlot.Type.ARMOR) continue;
+            if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR) continue;
 
             var stack = new ItemStack(MobEntity.getEquipmentForSlot(slot, armorLevel));
             if (slot == EquipmentSlot.HEAD && self.getRandom().nextFloat() < 0.25D) {
                 var wools = Registries.BLOCK.stream().filter(b -> b.getRegistryEntry().isIn(BlockTags.WOOL)).toList();
                 stack = new ItemStack(wools.get(self.getRandom().nextInt(wools.size())));
             }
-            EnchantmentHelper.enchant(serverWorld.getEnabledFeatures(), self.getRandom(), stack, 30, false);
+            EnchantmentHelper.enchant(self.getRandom(), stack, 30, serverWorld.getRegistryManager(), Optional.empty());
             self.equipStack(slot, stack);
         }
 
@@ -53,7 +55,7 @@ public class MobEntityMixin {
         } else {
             stack = new ItemStack(Items.DIAMOND_SWORD);
         }
-        EnchantmentHelper.enchant(serverWorld.getEnabledFeatures(), self.getRandom(), stack, 30, false);
+        EnchantmentHelper.enchant(self.getRandom(), stack, 30, serverWorld.getRegistryManager(), Optional.empty());
         self.equipStack(EquipmentSlot.MAINHAND, stack);
     }
 }

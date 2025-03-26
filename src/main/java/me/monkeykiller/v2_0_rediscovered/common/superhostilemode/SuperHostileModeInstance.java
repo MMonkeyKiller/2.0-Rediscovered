@@ -85,7 +85,7 @@ public class SuperHostileModeInstance {
 
                 if (CONFIG_COMMON.super_hostile_mode.spawn_fake_lightning) {
                     for (var player : world.getPlayers())
-                        player.networkHandler.sendPacket(new EntitySpawnS2CPacket(lightning));
+                        player.networkHandler.sendPacket(new EntitySpawnS2CPacket(lightning, 0, lightning.getBlockPos()));
                 } else world.spawnEntity(lightning);
 
 

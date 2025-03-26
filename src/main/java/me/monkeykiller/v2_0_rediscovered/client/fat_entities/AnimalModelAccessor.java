@@ -10,5 +10,5 @@ public interface AnimalModelAccessor {
 
     Iterable<ModelPart> getBodyParts();
 
-    void render(Entity entity, MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha);
+    void render(Entity entity, MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color);
 }

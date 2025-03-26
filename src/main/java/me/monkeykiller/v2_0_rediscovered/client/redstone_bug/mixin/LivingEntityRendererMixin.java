@@ -10,9 +10,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(LivingEntityRenderer.class)
 public class LivingEntityRendererMixin {
@@ -26,19 +25,11 @@ public class LivingEntityRendererMixin {
         }
     }
 
-    @ModifyArgs(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"), method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
-    protected void modifyArgs(Args args) {
-        if (color != 0) {
-            var red = (float) (color >> 16 & 255) / 255.0F;
-            var green = (float) (color >> 8 & 255) / 255.0F;
-            var blue = (float) (color & 255) / 255.0F;
-            var alpha = (float) (color >> 24 & 255) / 255.0F;
-
-            var i = args.size() - 4;
-            args.set(i++, red);
-            args.set(i++, green);
-            args.set(i++, blue);
-            args.set(i++, alpha);
+    @ModifyArg(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;III)V"), method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", index = 4)
+    protected int modifyArgs(int color) {
+        if (this.color != 0) {
+            color = this.color;
         }
+        return color;
     }
 }

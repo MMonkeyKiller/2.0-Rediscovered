@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 import static me.monkeykiller.v2_0_rediscovered.common.V2_0_Rediscovered.CONFIG_COMMON;
 
 @Mixin(ZombifiedPiglinEntity.class)
@@ -20,7 +22,7 @@ public class ZombifiedPiglinEntityMixin {
         var self = (ZombifiedPiglinEntity) (Object) this;
         ci.cancel();
 
-        var temporalSword = EnchantmentHelper.enchant(self.getWorld().getEnabledFeatures(), self.getRandom(), new ItemStack(Items.GOLDEN_SWORD), 30, false);
+        var temporalSword = EnchantmentHelper.enchant(self.getRandom(), new ItemStack(Items.GOLDEN_SWORD), 30, self.getWorld().getRegistryManager(), Optional.empty());
         self.equipStack(EquipmentSlot.MAINHAND, temporalSword.copyComponentsToNewStack(Items.OAK_SIGN, 1));
     }
 }

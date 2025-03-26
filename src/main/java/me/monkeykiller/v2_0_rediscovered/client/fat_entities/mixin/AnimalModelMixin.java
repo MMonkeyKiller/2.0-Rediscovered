@@ -23,10 +23,10 @@ public abstract class AnimalModelMixin implements AnimalModelAccessor {
     public abstract Iterable<ModelPart> getBodyParts();
 
     @Override
-    public void render(Entity entity, MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
+    public void render(Entity entity, MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
         var model = (AnimalModel<?>) (Object) this;
         if (model.child || !(entity instanceof FatEntityAccessor fatEntity) || entity instanceof ChickenEntity || !fatEntity.isFattenable()) {
-            model.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+            model.render(matrices, vertices, light, overlay, color);
             return;
         }
 
@@ -37,7 +37,7 @@ public abstract class AnimalModelMixin implements AnimalModelAccessor {
         matrices.push();
         matrices.translate(0.0F, -((float) fatness) / 2.0F * blockScale, -((float) fatness) / 2.0F * blockScale);
         getHeadParts().forEach((headPart) -> {
-            headPart.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+            headPart.render(matrices, vertices, light, overlay, color);
         });
         matrices.pop();
         // --
@@ -56,14 +56,14 @@ public abstract class AnimalModelMixin implements AnimalModelAccessor {
         var bodyParts = new ArrayList<ModelPart>();
         getBodyParts().forEach(bodyParts::add);
 
-        bodyParts.get(0).render(matrices, vertices, light, overlay, red, green, blue, alpha);
+        bodyParts.get(0).render(matrices, vertices, light, overlay, color);
         matrices.pop();
         // --
 
         matrices.push(); // Push a new matrix for the rest of the body parts
         // Render the rest of the body parts without scaling
         for (int i = 1; i < bodyParts.size(); i++) {
-            bodyParts.get(i).render(matrices, vertices, light, overlay, red, green, blue, alpha);
+            bodyParts.get(i).render(matrices, vertices, light, overlay, color);
         }
         matrices.pop(); // Pop the main matrix
     }
