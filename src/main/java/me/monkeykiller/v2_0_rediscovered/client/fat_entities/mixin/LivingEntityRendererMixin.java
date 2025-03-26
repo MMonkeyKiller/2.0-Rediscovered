@@ -24,12 +24,12 @@ public class LivingEntityRendererMixin {
         this.livingEntity = livingEntity;
     }
 
-    @Redirect(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
-    public void renderModel(EntityModel<?> instance, MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
+    @Redirect(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;III)V"))
+    public void renderModel(EntityModel<?> instance, MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
         if (instance instanceof AnimalModelAccessor animalModel) {
-            animalModel.render(this.livingEntity, matrices, vertices, light, overlay, red, green, blue, alpha);
+            animalModel.render(this.livingEntity, matrices, vertices, light, overlay, color);
             return;
         }
-        instance.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+        instance.render(matrices, vertices, light, overlay, color);
     }
 }

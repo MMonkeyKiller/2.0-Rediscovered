@@ -45,7 +45,7 @@ public class WitherLoveEntityRenderer extends EntityRenderer<WitherLoveEntity> {
         float j = MathHelper.lerp(g, witherLoveEntity.prevPitch, witherLoveEntity.getPitch());
         VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(this.model.getLayer(this.getTexture(witherLoveEntity)));
         this.model.setHeadRotation(0.0f, h, j);
-        this.model.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, 1.0f, 1.0f, 1.0f, 1.0f);
+        this.model.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV);
         matrixStack.pop();
         super.render(witherLoveEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }

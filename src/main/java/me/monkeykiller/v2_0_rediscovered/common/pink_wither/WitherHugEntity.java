@@ -1,6 +1,5 @@
 package me.monkeykiller.v2_0_rediscovered.common.pink_wither;
 
-import net.minecraft.client.render.entity.feature.SkinOverlayOwner;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.goal.*;
@@ -26,6 +25,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.EntityTypeTags;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -242,8 +242,8 @@ public class WitherHugEntity extends HostileEntity implements SkinOverlayOwner, 
     }
 
     @Override
-    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
-        super.dropEquipment(source, lootingMultiplier, allowDrops);
+    protected void dropEquipment(ServerWorld world, DamageSource source, boolean allowDrops) {
+        super.dropEquipment(world, source, allowDrops);
         ItemEntity itemEntity = this.dropItem(Items.NETHER_STAR);
         if (itemEntity != null) {
             itemEntity.setCovetedItem();
@@ -291,7 +291,7 @@ public class WitherHugEntity extends HostileEntity implements SkinOverlayOwner, 
     }
 
     @Override
-    public boolean canUsePortals() {
+    public boolean canUsePortals(boolean allowVehicles) {
         return false;
     }
 
@@ -323,9 +323,7 @@ public class WitherHugEntity extends HostileEntity implements SkinOverlayOwner, 
         var headPos = new Vec3d(this.getHeadX(0), this.getHeadY(0), this.getHeadZ(0));
         var dir = targetPos.subtract(headPos);
 
-        var witherLoveEntity = new WitherLoveEntity(
-                this.getWorld(), this,
-                dir.getX(), dir.getY(), dir.getZ());
+        var witherLoveEntity = new WitherLoveEntity(this.getWorld(), this, dir);
         witherLoveEntity.setOwner(this);
         witherLoveEntity.setPos(headPos.getX(), headPos.getY(), headPos.getZ());
         this.getWorld().spawnEntity(witherLoveEntity);

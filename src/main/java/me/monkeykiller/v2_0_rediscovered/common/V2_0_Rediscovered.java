@@ -95,7 +95,7 @@ public class V2_0_Rediscovered implements ModInitializer {
     );
 
     public static Identifier identifier(@NotNull String path) {
-        return new Identifier(MOD_ID, path);
+        return Identifier.of(MOD_ID, path);
     }
 
     @SneakyThrows
